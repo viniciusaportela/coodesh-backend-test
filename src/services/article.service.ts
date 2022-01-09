@@ -13,6 +13,16 @@ export default class ArticleService {
       .exec();
   }
 
+  static async get(articleId: string) {
+    const article = await ArticleModel.findById({ _id: articleId });
+
+    if (article) {
+      return article;
+    } else {
+      throw new NotFoundError();
+    }
+  }
+
   static async create(article: IArticle) {
     const articleInDb = await ArticleModel.findOne({ _id: article.id });
 

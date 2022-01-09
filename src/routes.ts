@@ -5,7 +5,7 @@ import RootRoute from './routes/root.route';
 
 const router = Router();
 
-router.use('/', RootRoute);
 router.use("/articles", ArticleRoute);
+router.use('/', RootRoute);
 
 export default router;

@@ -11,8 +11,19 @@ export default class ArticleController {
 
       const articles = await ArticleService.list(limit, page);
       res.json(articles);
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async get(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { articleId } = req.params;
+
+      const article = await ArticleService.get(articleId);
+      res.json(article);
+    } catch (error) {
+      next(error);
     }
   }
 
@@ -22,31 +33,31 @@ export default class ArticleController {
     try {
       const inserted = await ArticleService.create(article);
       res.status(201).json(inserted);
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 
   static async update(req: Request, res: Response, next: NextFunction) {
     const article = req.body;
-    const { article: articleId } = req.params;
+    const { articleId } = req.params;
 
     try {
       await ArticleService.update(articleId, article);
       res.sendStatus(200);
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 
   static async delete(req: Request, res: Response, next: NextFunction) {
-    const { article } = req.params;
+    const { articleId } = req.params;
 
     try {
-      await ArticleService.delete(article);
+      await ArticleService.delete(articleId);
       res.sendStatus(200);
-    } catch (e) {
-      next(e);
+    } catch (error) {
+      next(error);
     }
   }
 }

@@ -8,7 +8,7 @@ export function handleValidatorErrors(
   next: NextFunction
 ) {
   const errors = validationResult(req);
-
+  
   if (!errors.isEmpty()) {
     const errorList = errors.array();
     next(new ValidationError(errorList));

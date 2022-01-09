@@ -3,6 +3,7 @@ export enum ErrorCodes {
   MISSING_FIELD = 'missing_field',
   ALREADY_EXISTS = 'already_exists',
   NOT_FOUND = 'not_found',
+  VALIDATION_ERROR = 'validation_error',
 
   SHOULD_BE_STRING = 'should_be_string',
 
