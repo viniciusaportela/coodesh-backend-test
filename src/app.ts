@@ -30,7 +30,7 @@ async function initServer() {
 
     const app = express();
 
-    setupSwagger(app);
+    await setupSwagger(app);
     setupMiddlewares(app);
 
     app.listen(env.port, () => {

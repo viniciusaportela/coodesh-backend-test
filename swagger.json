@@ -1,0 +1,297 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "Space Flight Articles API, based on [Spaceflight News API](https://api.spaceflightnewsapi.net/v3/documentation)",
+    "version": "1.0.0",
+    "title": "Space Flight Articles",
+    "contact": {
+      "email": "vinicius.portela.stm@gmail.com"
+    }
+  },
+  "paths": {
+    "/": {
+      "get": {
+        "tags": ["Root"],
+        "summary": "Returns Back-end Challenge 2021 🏅 - Space Flight News",
+        "responses": {
+          "200": {
+            "description": "Returns Back-end Challenge 2021 🏅 - Space Flight News"
+          }
+        }
+      }
+    },
+    "/articles": {
+      "get": {
+        "tags": ["Articles"],
+        "summary": "Get a list of articles",
+        "responses": {
+          "200": {
+            "description": "A list of articles",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer",
+                        "example": 0
+                      },
+                      "featured": {
+                        "type": "boolean",
+                        "example": false
+                      },
+                      "title": {
+                        "type": "string",
+                        "example": "title"
+                      },
+                      "url": {
+                        "type": "string",
+                        "example": "https://example.com"
+                      },
+                      "imageUrl": {
+                        "type": "string",
+                        "example": "https://example.com"
+                      },
+                      "newsSite": {
+                        "type": "string",
+                        "example": "newsSite"
+                      },
+                      "summary": {
+                        "type": "string",
+                        "example": "summary summary"
+                      },
+                      "publishedAt": {
+                        "type": "string",
+                        "example": "2022-01-09T22:13:10.000Z"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Articles"],
+        "summary": "Creates an article",
+        "responses": {
+          "200": {
+            "description": "Created successfully"
+          }
+        }
+      }
+    },
+    "/articles/{articleId}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "ID of article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Articles"],
+        "summary": "Get an article by ID",
+        "responses": {
+          "200": {
+            "description": "An article",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "integer",
+                      "example": 0
+                    },
+                    "featured": {
+                      "type": "boolean",
+                      "example": false
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "title"
+                    },
+                    "url": {
+                      "type": "string",
+                      "example": "https://example.com"
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "example": "https://example.com"
+                    },
+                    "newsSite": {
+                      "type": "string",
+                      "example": "newsSite"
+                    },
+                    "summary": {
+                      "type": "string",
+                      "example": "summary summary"
+                    },
+                    "publishedAt": {
+                      "type": "string",
+                      "example": "2022-01-09T22:13:10.000Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "ID of article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Articles"],
+        "summary": "Update an article by ID",
+        "responses": {
+          "200": {
+            "description": "Updated successfully"
+          }
+        }
+      },
+      "delete": {
+        "parameters": [
+          {
+            "name": "articleId",
+            "in": "path",
+            "description": "ID of article",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Articles"],
+        "summary": "Delete an article by ID",
+        "responses": {
+          "200": {
+            "description": "Deleted successfully"
+          }
+        }
+      }
+    },
+    "/events": {
+      "post": {
+        "tags": ["Events"],
+        "summary": "Creates an event",
+        "responses": {
+          "200": {
+            "description": "Created successfully"
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "delete": {
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Events"],
+        "summary": "Delete an event by ID",
+        "responses": {
+          "200": {
+            "description": "Deleted successfully"
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Events"],
+        "summary": "Update an event by ID",
+        "responses": {
+          "200": {
+            "description": "Updated successfully"
+          }
+        }
+      }
+    },
+    "/launches": {
+      "post": {
+        "tags": ["Launches"],
+        "summary": "Creates a launch",
+        "responses": {
+          "200": {
+            "description": "Created successfully"
+          }
+        }
+      }
+    },
+    "/launches/{launchId}": {
+      "delete": {
+        "parameters": [
+          {
+            "name": "launchId",
+            "in": "path",
+            "description": "ID of launch",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Launches"],
+        "summary": "Delete an launch by ID",
+        "responses": {
+          "200": {
+            "description": "Deleted successfully"
+          }
+        }
+      },
+      "put": {
+        "parameters": [
+          {
+            "name": "launchId",
+            "in": "path",
+            "description": "ID of launch",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Launches"],
+        "summary": "Update an launch by ID",
+        "responses": {
+          "200": {
+            "description": "Updated successfully"
+          }
+        }
+      }
+    }
+  }
+}

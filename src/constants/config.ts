@@ -1,2 +1,2 @@
 export const PAGINATION_MAX_LIMIT = 1000;
-export const SYNC_ARTICLES_PER_PAGE = 10;
+export const SYNC_ARTICLES_PER_PAGE = 100;

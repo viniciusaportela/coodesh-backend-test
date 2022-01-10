@@ -34,31 +34,40 @@ export async function syncArticlesFromApi() {
       const articlesIdsInDb = await ArticleModel.hasMany(articles.map(article => article.id));
       const articlesToAdd = articles.filter(article => !articlesIdsInDb.includes(article.id));
 
+      const eventsAdded = new Set();
+      const launchesAdded = new Set();
+
       await Promise.all(articlesToAdd.map(async article => {
         const input = {
           ...article,
           events: article.events.map(event => event.id),
           launches: article.launches.map(launch => launch.id),
         }
-
+  
         await Promise.all(article.events.map(async (event) => {
-          const hasEvent = await EventModel.has(event.id);
-
-          if (!hasEvent) {
-            await EventService.create(event.provider, event.id)
+          const hasEventInDb = await EventModel.has(event.id);
+  
+          if (!hasEventInDb) {
+            if (!eventsAdded.has(event.id)) {
+              eventsAdded.add(event.id);
+              await EventService.create(event.provider, event.id);
+            }
           }
-        }))
-
+        }));
+  
         await Promise.all(article.launches.map(async (launch) => {
-          const hasLaunch = await LaunchModel.has(launch.id);
-
-          if (!hasLaunch) {
-            await LaunchService.create(launch.provider, launch.id)
+          const hasLaunchInDb = await LaunchModel.has(launch.id);
+  
+          if (!hasLaunchInDb) {
+            if (!launchesAdded.has(launch.id)) {
+              launchesAdded.add(launch.id);
+              await LaunchService.create(launch.provider, launch.id);
+            }
           }
-        }))
-
+        }));
+  
         importedCount += 1;
-
+  
         await ArticleService.create(input);
       }))
 
@@ -86,7 +95,7 @@ async function getLastPageFromCache() {
   const cacheFileExists = existsSync(cacheFilePath);
 
   if (!cacheFileExists) {
-    return 0;
+    return -1;
   }
 
   const cacheFileRaw = await readFile(cacheFilePath, 'utf-8');
