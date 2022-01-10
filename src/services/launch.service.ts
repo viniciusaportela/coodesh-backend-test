@@ -11,7 +11,7 @@ export default class LaunchService {
     if (launch) {
       return launch;
     } else {
-      throw new NotFoundError();
+      throw new NotFoundError("This launch doesn't exists");
     }
   }
 
@@ -35,7 +35,7 @@ export default class LaunchService {
     const launchInDb = await LaunchModel.has(launchId);
 
     if (!launchInDb) {
-      throw new NotFoundError();
+      throw new NotFoundError("This launch doesn't exists");
     }
 
     await LaunchModel.update(launchId, { provider })
@@ -45,7 +45,7 @@ export default class LaunchService {
     const launchInDb = await LaunchModel.has(launchId);
 
     if (!launchInDb) {
-      throw new NotFoundError();
+      throw new NotFoundError("This launch doesn't exists");
     }
 
     await LaunchModel.delete(launchId);
@@ -55,12 +55,12 @@ export default class LaunchService {
     const articleExists = await ArticleModel.has(articleId);
 
     if (!articleExists) {
-      throw new NotFoundError("this article doesn't exists");
+      throw new NotFoundError("This article doesn't exists");
     }
 
     const launchExists = await LaunchModel.has(launchId);
     if (!launchExists) {
-      throw new NotFoundError("this launch doesn't exists");
+      throw new NotFoundError("This launch doesn't exists");
     }
 
     await ArticleLaunchModel.create(launchId, articleId);

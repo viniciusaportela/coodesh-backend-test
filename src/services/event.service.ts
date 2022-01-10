@@ -11,7 +11,7 @@ export default class EventService {
     if (event) {
       return event;
     } else {
-      throw new NotFoundError();
+      throw new NotFoundError("This event doesn't exists");
     }
   }
 
@@ -35,7 +35,7 @@ export default class EventService {
     const eventInDb = await EventModel.has(eventId);
 
     if (!eventInDb) {
-      throw new NotFoundError();
+      throw new NotFoundError("This event doesn't exists");
     }
 
     await EventModel.update(eventId, { provider })
@@ -45,7 +45,7 @@ export default class EventService {
     const eventInDb = await EventModel.has(eventId);
 
     if (!eventInDb) {
-      throw new NotFoundError();
+      throw new NotFoundError("This event doesn't exists");
     }
 
     await EventModel.delete(eventId);
@@ -55,12 +55,12 @@ export default class EventService {
     const articleExists = await ArticleModel.has(articleId);
 
     if (!articleExists) {
-      throw new NotFoundError("this article doesn't exists");
+      throw new NotFoundError("This article doesn't exists");
     }
 
     const eventExists = await EventModel.has(eventId)
     if (!eventExists) {
-      throw new NotFoundError("this event doesn't exists");
+      throw new NotFoundError("This event doesn't exists");
     }
 
     await ArticleEventModel.create(eventId, articleId);

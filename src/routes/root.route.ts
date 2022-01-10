@@ -17,7 +17,7 @@ router.get('/', (_req, res) => {
 })
 
 router.use('*', (_req, _res, next) => {
-  next(new NotFoundError());
+  next(new NotFoundError("This endpoint doesn't exists"));
 })
 
 export default router;

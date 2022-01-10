@@ -19,7 +19,7 @@ export default class ArticleService {
     if (article) {
       return article;
     } else {
-      throw new NotFoundError();
+      throw new NotFoundError("This article doesn't exists");
     }
   }
 
@@ -66,7 +66,7 @@ export default class ArticleService {
       const articleInDb = await ArticleModel.get(articleId);
 
       if (!articleInDb) {
-        throw new NotFoundError();
+        throw new NotFoundError("This article doesn't exists");
       }
 
       await ArticleModel.update(articleId, article);
@@ -110,7 +110,7 @@ export default class ArticleService {
     const isArticleInDb = await ArticleModel.has(articleId);
 
     if (!isArticleInDb) {
-      throw new NotFoundError();
+      throw new NotFoundError("This article doesn't exists");
     }
 
     await ArticleModel.delete(articleId);

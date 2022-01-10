@@ -22,6 +22,26 @@
     },
     "/articles": {
       "get": {
+        "parameters": [
+          {
+            "in": "query",
+            "name": "limit",
+            "schema": {
+              "default": 10,
+              "type": "integer"
+            },
+            "description": "The numbers of items to return. Can't be greater than 1000"
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "schema": {
+              "default": 1,
+              "type": "integer"
+            },
+            "description": "Current page (starts on 1)"
+          }
+        ],
         "tags": ["Articles"],
         "summary": "Get a list of articles",
         "responses": {
@@ -32,41 +52,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "type": "object",
-                    "properties": {
-                      "id": {
-                        "type": "integer",
-                        "example": 0
-                      },
-                      "featured": {
-                        "type": "boolean",
-                        "example": false
-                      },
-                      "title": {
-                        "type": "string",
-                        "example": "title"
-                      },
-                      "url": {
-                        "type": "string",
-                        "example": "https://example.com"
-                      },
-                      "imageUrl": {
-                        "type": "string",
-                        "example": "https://example.com"
-                      },
-                      "newsSite": {
-                        "type": "string",
-                        "example": "newsSite"
-                      },
-                      "summary": {
-                        "type": "string",
-                        "example": "summary summary"
-                      },
-                      "publishedAt": {
-                        "type": "string",
-                        "example": "2022-01-09T22:13:10.000Z"
-                      }
-                    }
+                    "$ref": "#/components/schemas/Article"
                   }
                 }
               }
@@ -77,9 +63,39 @@
       "post": {
         "tags": ["Articles"],
         "summary": "Creates an article",
+        "description": "Creates an article. The **events** should be an array of event ids and the **launches** should be an array of launch ids. You should create the events and launches before using it. Use the `/events` and `/launches` endpoints for that. The **id** is required.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleInput"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Created successfully"
+          },
+          "409": {
+            "description": "Already Exists",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AlreadyExists"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
           }
         }
       }
@@ -105,41 +121,17 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "integer",
-                      "example": 0
-                    },
-                    "featured": {
-                      "type": "boolean",
-                      "example": false
-                    },
-                    "title": {
-                      "type": "string",
-                      "example": "title"
-                    },
-                    "url": {
-                      "type": "string",
-                      "example": "https://example.com"
-                    },
-                    "imageUrl": {
-                      "type": "string",
-                      "example": "https://example.com"
-                    },
-                    "newsSite": {
-                      "type": "string",
-                      "example": "newsSite"
-                    },
-                    "summary": {
-                      "type": "string",
-                      "example": "summary summary"
-                    },
-                    "publishedAt": {
-                      "type": "string",
-                      "example": "2022-01-09T22:13:10.000Z"
-                    }
-                  }
+                  "$ref": "#/components/schemas/Article"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
                 }
               }
             }
@@ -159,10 +151,39 @@
           }
         ],
         "tags": ["Articles"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ArticleUpdateInput"
+              }
+            }
+          }
+        },
         "summary": "Update an article by ID",
         "responses": {
           "200": {
             "description": "Updated successfully"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
           }
         }
       },
@@ -183,6 +204,16 @@
         "responses": {
           "200": {
             "description": "Deleted successfully"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
           }
         }
       }
@@ -191,9 +222,28 @@
       "post": {
         "tags": ["Events"],
         "summary": "Creates an event",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Event"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Created successfully"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
           }
         }
       }
@@ -216,6 +266,16 @@
         "responses": {
           "200": {
             "description": "Deleted successfully"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
           }
         }
       },
@@ -236,6 +296,26 @@
         "responses": {
           "200": {
             "description": "Updated successfully"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
           }
         }
       }
@@ -244,9 +324,28 @@
       "post": {
         "tags": ["Launches"],
         "summary": "Creates a launch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Launch"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "Created successfully"
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
           }
         }
       }
@@ -269,6 +368,16 @@
         "responses": {
           "200": {
             "description": "Deleted successfully"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
           }
         }
       },
@@ -289,6 +398,266 @@
         "responses": {
           "200": {
             "description": "Updated successfully"
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "NotFound": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "not_found"
+          },
+          "code": {
+            "type": "integer",
+            "example": 404
+          },
+          "description": {
+            "type": "string",
+            "example": "description"
+          }
+        }
+      },
+      "AlreadyExists": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "already_exists"
+          },
+          "code": {
+            "type": "integer",
+            "example": 409
+          },
+          "description": {
+            "type": "string",
+            "example": "description"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "validation_error"
+          },
+          "code": {
+            "type": "integer",
+            "example": 422
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "errorCode": {
+                  "type": "string",
+                  "example": "should_be_string"
+                },
+                "field": {
+                  "type": "string",
+                  "example": "title"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ArticleInput": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 12
+          },
+          "featured": {
+            "type": "boolean",
+            "example": false
+          },
+          "title": {
+            "type": "string",
+            "example": "title"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://example.com"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com"
+          },
+          "newsSite": {
+            "type": "string",
+            "example": "newsSite"
+          },
+          "summary": {
+            "type": "string",
+            "example": "summary summary"
+          },
+          "publishedAt": {
+            "type": "string",
+            "example": "2022-01-09T22:13:10.000Z"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          "launches": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "c660df6f-7e33-4c90-a0f5-b27c8cb4c974"
+            }
+          }
+        }
+      },
+      "ArticleUpdateInput": {
+        "type": "object",
+        "properties": {
+          "featured": {
+            "type": "boolean",
+            "example": false
+          },
+          "title": {
+            "type": "string",
+            "example": "title"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://example.com"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com"
+          },
+          "newsSite": {
+            "type": "string",
+            "example": "newsSite"
+          },
+          "summary": {
+            "type": "string",
+            "example": "summary summary"
+          },
+          "publishedAt": {
+            "type": "string",
+            "example": "2022-01-09T22:13:10.000Z"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "example": 1
+            }
+          },
+          "launches": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "example": "c660df6f-7e33-4c90-a0f5-b27c8cb4c974"
+            }
+          }
+        }
+      },
+      "Article": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 12
+          },
+          "featured": {
+            "type": "boolean",
+            "example": false
+          },
+          "title": {
+            "type": "string",
+            "example": "title"
+          },
+          "url": {
+            "type": "string",
+            "example": "https://example.com"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "https://example.com"
+          },
+          "newsSite": {
+            "type": "string",
+            "example": "newsSite"
+          },
+          "summary": {
+            "type": "string",
+            "example": "summary summary"
+          },
+          "publishedAt": {
+            "type": "string",
+            "example": "2022-01-09T22:13:10.000Z"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Event"
+            }
+          },
+          "launches": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Launch"
+            }
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 2
+          },
+          "provider": {
+            "type": "string",
+            "example": "provider"
+          }
+        }
+      },
+      "Launch": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "c660df6f-7e33-4c90-a0f5-b27c8cb4c974"
+          },
+          "provider": {
+            "type": "string",
+            "example": "provider"
           }
         }
       }
