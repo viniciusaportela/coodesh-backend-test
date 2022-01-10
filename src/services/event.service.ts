@@ -93,4 +93,8 @@ export default class EventService {
       ) VALUES ($1, $2)
     `, [eventId, articleId])
   }
+
+  static async removeArticle() {
+    
+  }
 }

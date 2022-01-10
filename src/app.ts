@@ -9,6 +9,7 @@ import { config } from './config/config'
 import { handleErrors } from "./middlewares/handleErrors.middleware";
 import { syncArticlesFromApi } from "./scripts/syncArticlesFromApi";
 import { connectDb } from "./config/connectDb";
+import { setupSwagger } from "./config/swagger";
 
 async function configureCron() {
   cron.schedule('0 9 * * * *', syncArticlesFromApi);
@@ -29,8 +30,9 @@ async function initServer() {
 
     const app = express();
 
+    setupSwagger(app);
     setupMiddlewares(app);
-  
+
     app.listen(config.port, () => {
       console.log(`Server is running on port: ${config.port}`);
     });

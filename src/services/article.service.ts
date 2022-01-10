@@ -133,7 +133,7 @@ export default class ArticleService {
     }
   }
 
-  static async update(articleId: number, article: Omit<IArticle, 'id'>) {
+  static async update(articleId: number, article: Omit<IInputArticle, 'id'>) {
     const isArticleInDb = await ArticleService.has(articleId);
 
     if (!isArticleInDb) {
@@ -162,6 +162,18 @@ export default class ArticleService {
         article.publishedAt,
       ]
     );
+
+    if (article.events) {
+      for await (let event of article.events) {
+        await EventService.insertToArticle(event, articleId);
+      }
+    }
+
+    if (article.launches) {
+      for await (let launch of article.launches) {
+        await LaunchService.insertToArticle(launch, articleId);
+      }
+    }
   }
 
   static async delete(articleId: number) {
