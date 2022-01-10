@@ -4,7 +4,7 @@ import { ILaunch } from "./launch.interface";
 export interface IInputArticle extends Omit<IRawArticle, 'publishedAt'> {
   publishedAt: string;
   launches: string[];
-  events: string[];
+  events: number[];
 }
 
 export interface IArticle extends Omit<IRawArticle, 'publishedAt'> {

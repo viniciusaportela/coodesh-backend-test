@@ -7,8 +7,13 @@ import fetch from 'node-fetch';
 import EventService from "../services/event.service";
 import LaunchService from "../services/launch.service";
 import ArticleModel from "../models/article.model";
+import EventModel from "../models/event.model";
+import LaunchModel from "../models/launch.model";
+import { mkdir, readFile, writeFile } from "fs/promises";
+import { join } from "path";
+import { existsSync } from "fs";
 
-const IMPORT_MESSAGE_INTERVAL = 100;
+const IMPORT_MESSAGE_INTERVAL_TO_LOG = 100;
 
 export async function syncArticlesFromApi() {
   try {
@@ -19,8 +24,10 @@ export async function syncArticlesFromApi() {
     const articlesCount = parseInt(responseText);
     let importedCount = 0;
 
-    for (let page = 0; page < articlesCount / SYNC_ARTICLES_PER_PAGE; page += 1) {
-      if (page % IMPORT_MESSAGE_INTERVAL === 0) console.log(`Importing page ${page}-${page + IMPORT_MESSAGE_INTERVAL}`);
+    const initialPage = await getLastPageFromCache();
+
+    for (let page = initialPage; page < articlesCount / SYNC_ARTICLES_PER_PAGE; page += 1) {
+      if (page % IMPORT_MESSAGE_INTERVAL_TO_LOG === 0) console.log(`Importing page ${page}-${page + IMPORT_MESSAGE_INTERVAL_TO_LOG}`);
       const response = await fetch(`${env.syncFetchApi}/articles?_sort=id&_limit=${SYNC_ARTICLES_PER_PAGE}&_start=${page * SYNC_ARTICLES_PER_PAGE}`);
       const articles = await response.json() as IArticle[];
 
@@ -35,7 +42,7 @@ export async function syncArticlesFromApi() {
         }
 
         await Promise.all(article.events.map(async (event) => {
-          const hasEvent = await EventService.has(event.id);
+          const hasEvent = await EventModel.has(event.id);
 
           if (!hasEvent) {
             await EventService.create(event.provider, event.id)
@@ -43,7 +50,7 @@ export async function syncArticlesFromApi() {
         }))
 
         await Promise.all(article.launches.map(async (launch) => {
-          const hasLaunch = await LaunchService.has(launch.id);
+          const hasLaunch = await LaunchModel.has(launch.id);
 
           if (!hasLaunch) {
             await LaunchService.create(launch.provider, launch.id)
@@ -54,6 +61,8 @@ export async function syncArticlesFromApi() {
 
         await ArticleService.create(input);
       }))
+
+      saveLastPageIndex(page);
     }
 
     console.log(`Finished script syncArticlesWithApi, imported ${importedCount} articles`);
@@ -70,4 +79,29 @@ export async function syncArticlesFromApi() {
       `
     });
   }
+}
+
+async function getLastPageFromCache() {
+  const cacheFilePath = join(__dirname, './data/sync-articles-from-api.json');
+  const cacheFileExists = existsSync(cacheFilePath);
+
+  if (!cacheFileExists) {
+    return 0;
+  }
+
+  const cacheFileRaw = await readFile(cacheFilePath, 'utf-8');
+  const cacheFile = JSON.parse(cacheFileRaw);
+
+  return cacheFile.lastPage;
+}
+
+async function saveLastPageIndex(page: number) {
+  const dataFolderPath = join(__dirname, './data');
+
+  const dataFolderExists = existsSync(dataFolderPath);
+  if (!dataFolderExists) {
+    await mkdir(dataFolderPath);
+  }
+
+  await writeFile(join(dataFolderPath, 'sync-articles-from-api.json'), JSON.stringify({ lastPage: page }));
 }

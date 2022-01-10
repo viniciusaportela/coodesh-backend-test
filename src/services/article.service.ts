@@ -1,7 +1,6 @@
 import { AlreadyExistsError } from "../errors/already-exists";
 import { NotFoundError } from "../errors/not-found";
 import { IArticle, IInputArticle } from "../typings/article.interface";
-import { postgresClient } from "../config/connect-db";
 import EventService from "./event.service";
 import LaunchService from "./launch.service";
 import ArticleModel from "../models/article.model";

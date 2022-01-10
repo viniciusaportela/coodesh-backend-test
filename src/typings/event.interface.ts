@@ -1,4 +1,4 @@
 export interface IEvent {
-  id: string;
+  id: number;
   provider: string;
 }

@@ -1,101 +1,68 @@
-import { postgresClient } from "../config/connect-db";
 import { AlreadyExistsError } from "../errors/already-exists";
 import { NotFoundError } from "../errors/not-found";
+import ArticleEventModel from "../models/article-event.model";
 import ArticleModel from "../models/article.model";
-import ArticleService from "./article.service";
+import EventModel from "../models/event.model";
 
 export default class EventService {
-  static getQuery = 'SELECT * FROM events WHERE id = $1';
+  static async get(eventId: number) {
+    const event = await EventModel.get(eventId);
 
-  static async has(eventId: string) {
-    const event = await postgresClient.query(EventService.getQuery, [eventId]);
-    return !!event.rowCount;
-  }
-
-  static async get(eventId: string) {
-    const event = await postgresClient.query(EventService.getQuery, [eventId]);
-
-    if (event.rowCount) {
-      return event.rows[0];
+    if (event) {
+      return event;
     } else {
       throw new NotFoundError();
     }
   }
 
-  static async create(provider: string, eventId?: string) {
+  static async create(provider: string, eventId?: number) {
     let isEventInDb = false
     if (eventId) {
-      isEventInDb = await this.has(eventId);
+      isEventInDb = await EventModel.has(eventId);
     }
 
     if (!isEventInDb) {
-      const inserted = await postgresClient.query(`
-        INSERT INTO events(
-          ${eventId ? 'id,' : ''}
-          provider
-        ) VALUES (${eventId ? '$2,' : ''} $1)
-        RETURNING *
-      `, [
-        provider,
-        ...(eventId ? [eventId] : [])
-      ]);
-
-      return inserted.rows;
+      await EventModel.create({
+        id: eventId,
+        provider: provider,
+      });
     } else {
       throw new AlreadyExistsError();
     }
   }
 
-  static async update(eventId: string, provider: string) {
-    const eventInDb = await EventService.has(eventId);
+  static async update(eventId: number, provider: string) {
+    const eventInDb = await EventModel.has(eventId);
 
     if (!eventInDb) {
       throw new NotFoundError();
     }
 
-    await postgresClient.query(
-      `
-        UPDATE events SET 
-          provider = $2
-        WHERE id = $1
-      `, [
-        eventId,
-        provider,
-      ]
-    );
+    await EventModel.update(eventId, { provider })
   }
 
-  static async delete(eventId: string) {
-    const eventInDb = await EventService.has(eventId);
+  static async delete(eventId: number) {
+    const eventInDb = await EventModel.has(eventId);
 
     if (!eventInDb) {
       throw new NotFoundError();
     }
 
-    await postgresClient.query('DELETE FROM events WHERE id = $1', [eventId]);
+    await EventModel.delete(eventId);
   }
 
-  static async insertToArticle(eventId: string, articleId: number) {
+  static async insertToArticle(eventId: number, articleId: number) {
     const articleExists = ArticleModel.has(articleId);
 
     if (!articleExists) {
       throw new NotFoundError("this article doesn't exists");
     }
 
-    const eventExists = EventService.has(eventId)
+    const eventExists = EventModel.has(eventId)
     if (!eventExists) {
       throw new NotFoundError("this event doesn't exists");
     }
 
-    await postgresClient.query(`
-      INSERT INTO article_event(
-        event_id,
-        article_id
-      ) VALUES ($1, $2)
-    `, [eventId, articleId])
-  }
-
-  static async removeArticle() {
-    
+    await ArticleEventModel.create(eventId, articleId);
   }
 }

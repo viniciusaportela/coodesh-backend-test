@@ -12,9 +12,8 @@ CREATE TABLE articles (
 );
 
 CREATE TABLE events (
-    id UUID DEFAULT uuid_generate_v4 (),
-    provider VARCHAR(125) NOT NULL,
-    PRIMARY KEY (id)
+    id SERIAL PRIMARY KEY,
+    provider VARCHAR(125) NOT NULL
 );
 
 CREATE TABLE article_event (
@@ -24,8 +23,9 @@ CREATE TABLE article_event (
 );
 
 CREATE TABLE launches (
-    id SERIAL PRIMARY KEY,
+    id UUID DEFAULT uuid_generate_v4 (),
     provider VARCHAR(125) NOT NULL,
+    PRIMARY KEY (id)
 );
 
 CREATE TABLE article_launch (

@@ -1,22 +1,15 @@
-import { postgresClient } from "../config/connect-db";
 import { AlreadyExistsError } from "../errors/already-exists";
 import { NotFoundError } from "../errors/not-found";
+import ArticleLaunchModel from "../models/article-launch.model";
 import ArticleModel from "../models/article.model";
-import ArticleService from "./article.service";
+import LaunchModel from "../models/launch.model";
 
 export default class LaunchService {
-  static getQuery = 'SELECT * FROM launches WHERE id = $1';
-
-  static async has(launchId: string) {
-    const launch = await postgresClient.query(LaunchService.getQuery, [launchId]);
-    return !!launch.rowCount;
-  }
-
   static async get(launchId: string) {
-    const launch = await postgresClient.query(LaunchService.getQuery, [launchId]);
+    const launch = await LaunchModel.get(launchId);
 
-    if (launch.rowCount) {
-      return launch.rows[0];
+    if (launch) {
+      return launch;
     } else {
       throw new NotFoundError();
     }
@@ -25,54 +18,37 @@ export default class LaunchService {
   static async create(provider: string, launchId?: string) {
     let isLaunchInDb = false
     if (launchId) {
-      isLaunchInDb = await this.has(launchId);
+      isLaunchInDb = await LaunchModel.has(launchId);
     }
 
     if (!isLaunchInDb) {
-      const inserted = await postgresClient.query(`
-        INSERT INTO launches(
-          ${launchId ? 'id,' : ''}
-          provider
-        ) VALUES (${launchId ? '$2,' : ''} $1)
-        RETURNING *
-      `, [
-        provider,
-        ...(launchId ? [launchId] : [])
-      ]);
-
-      return inserted.rows;
+      await LaunchModel.create({
+        id: launchId,
+        provider: provider,
+      });
     } else {
       throw new AlreadyExistsError();
     }
   }
 
   static async update(launchId: string, provider: string) {
-    const isLaunchInDb = await this.has(launchId);
+    const launchInDb = await LaunchModel.has(launchId);
 
-    if (!isLaunchInDb) {
+    if (!launchInDb) {
       throw new NotFoundError();
     }
 
-    await postgresClient.query(
-      `
-        UPDATE launches SET 
-          provider = $2
-        WHERE id = $1
-      `, [
-        launchId,
-        provider,
-      ]
-    );
+    await LaunchModel.update(launchId, { provider })
   }
 
   static async delete(launchId: string) {
-    const isLaunchInDb = await this.has(launchId);
+    const launchInDb = await LaunchModel.has(launchId);
 
-    if (!isLaunchInDb) {
+    if (!launchInDb) {
       throw new NotFoundError();
     }
 
-    await postgresClient.query('DELETE FROM launches WHERE id = $1', [launchId]);
+    await LaunchModel.delete(launchId);
   }
 
   static async insertToArticle(launchId: string, articleId: number) {
@@ -82,16 +58,11 @@ export default class LaunchService {
       throw new NotFoundError("this article doesn't exists");
     }
 
-    const launchExists = LaunchService.has(launchId)
+    const launchExists = LaunchModel.has(launchId)
     if (!launchExists) {
       throw new NotFoundError("this launch doesn't exists");
     }
 
-    await postgresClient.query(`
-      INSERT INTO article_launch(
-        launch_id,
-        article_id
-      ) VALUES ($1, $2)
-    `, [launchId, articleId])
+    await ArticleLaunchModel.create(launchId, articleId);
   }
 }

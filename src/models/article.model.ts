@@ -41,8 +41,8 @@ export default class ArticleModel {
   `
 
   static async has(articleId: number) {
-    const article = await postgresClient.query('SELECT id FROM articles WHERE id = $1', [articleId]);
-    return !!article.rowCount;
+    const result = await postgresClient.query('SELECT id FROM articles WHERE id = $1', [articleId]);
+    return !!result.rowCount;
   }
 
   static async hasMany(articleIds: number[]): Promise<number[]> {

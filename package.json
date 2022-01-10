@@ -10,7 +10,7 @@
   "scripts": {
     "start": "ts-node ./src/app.ts",
     "dev": "nodemon ./src/app.ts",
-    "scripts:syncArticlesWithApi": "ts-node ./src/scripts/runSyncArticlesFromApi.ts"
+    "scripts:syncArticlesWithApi": "ts-node ./src/scripts/run-sync-article-from-api.ts"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",
