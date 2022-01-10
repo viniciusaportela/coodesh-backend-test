@@ -1,5 +1,5 @@
-import { ErrorCodes } from "../constants/errorCodes";
-import { HttpError } from "./HttpError";
+import { ErrorCodes } from "../constants/error-codes";
+import { HttpError } from "./http-error";
 
 export class NotFoundError extends HttpError {
   constructor(description?: string) {

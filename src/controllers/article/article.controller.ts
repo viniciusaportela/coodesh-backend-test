@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import ArticleService from "../../services/article.service";
 import { ArticleValidation } from "./article.validation";
 import { PAGINATION_MAX_LIMIT } from "../../constants/config";
-import { PassedPaginationLimitError } from "../../errors/PassedPaginationLimit";
+import { PassedPaginationLimitError } from "../../errors/passed-pagination-limit";
 
 export default class ArticleController {
   static validation = ArticleValidation;

@@ -1,6 +1,7 @@
-import { postgresClient } from "../config/connectDb";
-import { AlreadyExistsError } from "../errors/AlreadyExists";
-import { NotFoundError } from "../errors/NotFound";
+import { postgresClient } from "../config/connect-db";
+import { AlreadyExistsError } from "../errors/already-exists";
+import { NotFoundError } from "../errors/not-found";
+import ArticleModel from "../models/article.model";
 import ArticleService from "./article.service";
 
 export default class LaunchService {
@@ -75,7 +76,7 @@ export default class LaunchService {
   }
 
   static async insertToArticle(launchId: string, articleId: number) {
-    const articleExists = ArticleService.has(articleId);
+    const articleExists = ArticleModel.has(articleId);
 
     if (!articleExists) {
       throw new NotFoundError("this article doesn't exists");

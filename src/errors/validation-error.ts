@@ -1,6 +1,6 @@
-import { ErrorCodes } from "../constants/errorCodes";
+import { ErrorCodes } from "../constants/error-codes";
 import { ValidationError as ExpressValidationError } from 'express-validator'
-import { HttpError } from "./HttpError";
+import { HttpError } from "./http-error";
 
 interface IValidationErrorItem {
   errorCode: string;

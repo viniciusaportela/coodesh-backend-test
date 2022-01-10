@@ -1,4 +1,4 @@
-import { ErrorCodes, ErrorNumberCodes } from "../constants/errorCodes";
+import { ErrorCodes, ErrorNumberCodes } from "../constants/error-codes";
 
 export class HttpError extends Error {
   public statusCode: ErrorNumberCodes;

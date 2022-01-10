@@ -1,6 +1,6 @@
 import { PAGINATION_MAX_LIMIT } from "../constants/config";
-import { ErrorCodes } from "../constants/errorCodes";
-import { HttpError } from "./HttpError";
+import { ErrorCodes } from "../constants/error-codes";
+import { HttpError } from "./http-error";
 
 export class PassedPaginationLimitError extends HttpError {
   constructor() {

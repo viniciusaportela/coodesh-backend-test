@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export const config = {
+export const env = {
   syncFetchApi: process.env.SYNC_FETCH_API,
   cronActive: process.env.CRON_ACTIVE,
   gmailSenderEmail: process.env.GMAIL_SENDER_EMAIL,

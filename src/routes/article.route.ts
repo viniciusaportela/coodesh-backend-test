@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import ArticleController from "../controllers/article/article.controller";
-import { handleValidatorErrors } from "../middlewares/handleValidatorErrors.middleware";
+import { handleValidatorErrors } from "../middlewares/handle-validator-errors.middleware";
 
 const router = Router();
 

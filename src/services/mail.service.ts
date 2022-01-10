@@ -1,15 +1,15 @@
 import nodemailer from "nodemailer";
 import Mail from "nodemailer/lib/mailer";
-import { config } from '../config/config';
+import { env } from '../config/env';
 
 export default class MailService {
   static async send(optionsArg: Omit<Mail.Options, 'from'>) {
-    if (config.gmailSenderEmail && config.gmailSenderPassword) {
+    if (env.gmailSenderEmail && env.gmailSenderPassword) {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: config.gmailSenderEmail,
-          pass: config.gmailSenderPassword,
+          user: env.gmailSenderEmail,
+          pass: env.gmailSenderPassword,
         },
       });
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { NotFoundError } from "../errors/NotFound";
+import { NotFoundError } from "../errors/not-found";
 
 const router = Router();
 

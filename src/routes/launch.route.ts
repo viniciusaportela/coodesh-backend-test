@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import LaunchController from "../controllers/launch/launch.controller";
-import { handleValidatorErrors } from "../middlewares/handleValidatorErrors.middleware";
+import { handleValidatorErrors } from "../middlewares/handle-validator-errors.middleware";
 
 const router = Router();
 

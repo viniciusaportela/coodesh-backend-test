@@ -1,5 +1,5 @@
 import { body } from "express-validator";
-import { ErrorCodes } from "../../constants/errorCodes";
+import { ErrorCodes } from "../../constants/error-codes";
 
 export class ArticleValidation {
   static insert = [

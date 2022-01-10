@@ -1,7 +1,7 @@
 import { ErrorRequestHandler, NextFunction, Request, Response } from "express";
-import { ErrorCodes } from "../constants/errorCodes";
-import { HttpError } from "../errors/HttpError";
-import { ValidationError } from "../errors/ValidationError";
+import { ErrorCodes } from "../constants/error-codes";
+import { HttpError } from "../errors/http-error";
+import { ValidationError } from "../errors/validation-error";
 
 export async function handleErrors(
   error: HttpError,
