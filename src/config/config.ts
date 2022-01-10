@@ -3,8 +3,10 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export const config = {
-  gmailEmail: process.env.GMAIL_EMAIL,
-  gmailPassword: process.env.GMAIL_PASSWORD,
+  syncFetchApi: process.env.SYNC_FETCH_API,
+  cronActive: process.env.CRON_ACTIVE,
+  gmailSenderEmail: process.env.GMAIL_SENDER_EMAIL,
+  gmailSenderPassword: process.env.GMAIL_SENDER_PASSWORD,
   reportReceiverEmail: process.env.REPORT_RECEIVER_EMAIL,
   postgresHost: process.env.POSTGRES_HOST,
   postgresDatabase: process.env.POSTGRES_DATABASE,

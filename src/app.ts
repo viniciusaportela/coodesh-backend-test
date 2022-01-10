@@ -23,7 +23,7 @@ function setupMiddlewares(app: express.Express) {
 
 async function initServer() {
   try {
-    configureCron();
+    if (config.cronActive) configureCron();
 
     await connectDb();
 

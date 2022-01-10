@@ -4,12 +4,12 @@ import { config } from '../config/config';
 
 export default class MailService {
   static async send(optionsArg: Omit<Mail.Options, 'from'>) {
-    if (config.gmailEmail && config.gmailPassword) {
+    if (config.gmailSenderEmail && config.gmailSenderPassword) {
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: config.gmailEmail,
-          pass: config.gmailPassword,
+          user: config.gmailSenderEmail,
+          pass: config.gmailSenderPassword,
         },
       });
 

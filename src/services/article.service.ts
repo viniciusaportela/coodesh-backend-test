@@ -45,13 +45,13 @@ export default class ArticleService {
   `
 
   static getArticleByIdQuery = `
-    ${ArticleService.getArticlesQuery} WHERE id = $1
+    ${ArticleService.getArticlesQuery} ORDER BY id WHERE id = $1
   `;
 
   static async list(limit?: number, page?: number): Promise<IArticle[]> {
     const articles = await postgresClient
       .query(
-        `${ArticleService.getArticlesQuery} LIMIT $1 OFFSET $2`,
+        `${ArticleService.getArticlesQuery} ORDER BY id LIMIT $1 OFFSET $2`,
         [limit || DEFAULT_PAGINATION_LIMIT, (page || DEFAULT_PAGINATION_PAGE) - 1]
       );
 
@@ -59,8 +59,17 @@ export default class ArticleService {
   }
 
   static async has(articleId: number) {
-    const article = await postgresClient.query(ArticleService.getArticleByIdQuery, [articleId]);
+    const article = await postgresClient.query('SELECT id FROM articles WHERE id = $1', [articleId]);
     return !!article.rowCount;
+  }
+
+  static async hasMany(articleIds: number[]) {
+    const idsStr = articleIds.map((_, index) => `$${index + 1}`).join(',');
+
+    const articles = await postgresClient.query(`
+      SELECT id FROM articles WHERE id IN (${idsStr})
+    `, articleIds);
+    return articles.rows;
   }
 
   static async get(articleId: number): Promise<IArticle> {
