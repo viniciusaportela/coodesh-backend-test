@@ -5,7 +5,7 @@ import cors from "cors";
 
 import Routes from "./routes";
 
-import { env } from './config/env'
+import { envConfig } from './config/env'
 import { handleErrors } from "./middlewares/handle-errors.middleware";
 import { syncArticlesFromApi } from "./scripts/sync-article-from-api";
 import { connectDb } from "./config/connect-db";
@@ -24,7 +24,7 @@ function setupMiddlewares(app: express.Express) {
 
 async function initServer() {
   try {
-    if (env.cronActive) configureCron();
+    if (envConfig.cronActive) configureCron();
 
     await connectDb();
 
@@ -33,8 +33,8 @@ async function initServer() {
     await setupSwagger(app);
     setupMiddlewares(app);
 
-    app.listen(env.port, () => {
-      console.log(`Server is running on port: ${env.port}`);
+    app.listen(envConfig.port, () => {
+      console.log(`Server is running on port: ${envConfig.port}`);
     });
   } catch(error) {
     console.error("Error when trying to start server: ", error)
