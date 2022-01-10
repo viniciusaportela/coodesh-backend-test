@@ -30,12 +30,13 @@ export default class LaunchService {
     if (!isLaunchInDb) {
       const inserted = await postgresClient.query(`
         INSERT INTO launches(
-          id,
+          ${launchId ? 'id,' : ''}
           provider
-        ) VALUES ($1, $2)
+        ) VALUES (${launchId ? '$2,' : ''} $1)
+        RETURNING *
       `, [
-        launchId,
-        provider
+        provider,
+        ...(launchId ? [launchId] : [])
       ]);
 
       return inserted.rows;
@@ -54,7 +55,7 @@ export default class LaunchService {
     await postgresClient.query(
       `
         UPDATE launches SET 
-          provider = $2,
+          provider = $2
         WHERE id = $1
       `, [
         launchId,

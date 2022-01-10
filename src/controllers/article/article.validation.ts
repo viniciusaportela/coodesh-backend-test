@@ -45,5 +45,13 @@ export class ArticleValidation {
       .withMessage(ErrorCodes.SHOULD_BE_STRING)
       .isISO8601()
       .withMessage(ErrorCodes.INVALID_DATE),
+    body('events.*')
+      .optional()
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING),
+    body('launches.*')
+      .optional()
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING)
   ];
 }

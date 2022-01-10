@@ -15,7 +15,7 @@ export default class MailService {
 
       const mailOptions = {
         ...optionsArg,
-        from: "Flight Articles Service",
+        from: "Space Flight Articles Service",
       };
   
       await transporter.sendMail(mailOptions);

@@ -1,5 +1,4 @@
 import { NextFunction, Request, Response } from "express";
-import { IArticle, IFormattedArticle } from "../../typings/article.interface";
 import ArticleService from "../../services/article.service";
 import { ArticleValidation } from "./article.validation";
 import { PAGINATION_MAX_LIMIT } from "../../constants/config";
@@ -10,13 +9,16 @@ export default class ArticleController {
 
   static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const { limit, page } = req.body;
+      const { limit, page } = req.query as Record<string, string>;
 
-      if (limit > PAGINATION_MAX_LIMIT) {
+      if (parseInt(limit) > PAGINATION_MAX_LIMIT) {
         throw new PassedPaginationLimitError();
       }
 
-      const articles = await ArticleService.list(limit, page);
+      const articles = await ArticleService.list(
+        parseInt(limit), 
+        parseInt(page)
+      );
 
       res.json(articles);
     } catch (error) {
@@ -37,7 +39,7 @@ export default class ArticleController {
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
       const article = req.body;
-      const insertedArticle = await ArticleService.create(article);
+      let insertedArticle = await ArticleService.create(article);
       res.status(201).json(insertedArticle);
     } catch (error) {
       next(error);

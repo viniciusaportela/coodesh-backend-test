@@ -30,12 +30,13 @@ export default class EventService {
     if (!isEventInDb) {
       const inserted = await postgresClient.query(`
         INSERT INTO events(
-          id,
+          ${eventId ? 'id,' : ''}
           provider
-        ) VALUES ($1, $2)
+        ) VALUES (${eventId ? '$2,' : ''} $1)
+        RETURNING *
       `, [
-        eventId,
-        provider
+        provider,
+        ...(eventId ? [eventId] : [])
       ]);
 
       return inserted.rows;
@@ -54,7 +55,7 @@ export default class EventService {
     await postgresClient.query(
       `
         UPDATE events SET 
-          provider = $2,
+          provider = $2
         WHERE id = $1
       `, [
         eventId,

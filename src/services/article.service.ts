@@ -1,11 +1,13 @@
 import { DEFAULT_PAGINATION_LIMIT, DEFAULT_PAGINATION_PAGE } from "../constants/defaults";
 import { AlreadyExistsError } from "../errors/AlreadyExists";
 import { NotFoundError } from "../errors/NotFound";
-import { IArticle } from "../typings/article.interface";
+import { IArticle, IInputArticle } from "../typings/article.interface";
 import { postgresClient } from "../config/connectDb";
+import EventService from "./event.service";
+import LaunchService from "./launch.service";
 
 export default class ArticleService {
-  static querySelectAlias = `
+  static querySelectAliases = `
     id,
     featured,
     title,
@@ -16,16 +18,40 @@ export default class ArticleService {
     published_at AS "publishedAt"
   `
 
-  static getQuery = `
+  static getArticlesQuery = `
     SELECT
-      ${ArticleService.querySelectAlias}
-    FROM articles WHERE id = $1
+      ${ArticleService.querySelectAliases},
+      coalesce(launches_table._launches, '{}') AS launches,
+      coalesce(events_table._events, '{}') AS events
+    FROM articles
+    LEFT JOIN (
+      SELECT _article_launch.article_id AS id,
+      array_agg(
+        row_to_json(launches)
+      ) AS _launches
+      FROM article_launch AS _article_launch
+      JOIN launches ON launches.id = _article_launch.launch_id
+      GROUP BY _article_launch.article_id
+    ) as launches_table USING (id)
+    LEFT JOIN (
+      SELECT article_ev.article_id AS id,
+      array_agg(
+        row_to_json(events)
+      ) AS _events
+      FROM article_event AS article_ev
+      JOIN events ON events.id = article_ev.event_id
+      GROUP BY article_ev.article_id
+    ) as events_table USING (id)
+  `
+
+  static getArticleByIdQuery = `
+    ${ArticleService.getArticlesQuery} WHERE id = $1
   `;
 
-  static async list(limit?: number, page?: number) {
+  static async list(limit?: number, page?: number): Promise<IArticle[]> {
     const articles = await postgresClient
       .query(
-        'SELECT * FROM articles LIMIT $1 OFFSET $2', 
+        `${ArticleService.getArticlesQuery} LIMIT $1 OFFSET $2`,
         [limit || DEFAULT_PAGINATION_LIMIT, (page || DEFAULT_PAGINATION_PAGE) - 1]
       );
 
@@ -33,12 +59,12 @@ export default class ArticleService {
   }
 
   static async has(articleId: number) {
-    const article = await postgresClient.query(ArticleService.getQuery, [articleId]);
+    const article = await postgresClient.query(ArticleService.getArticleByIdQuery, [articleId]);
     return !!article.rowCount;
   }
 
-  static async get(articleId: number) {
-    const article = await postgresClient.query(ArticleService.getQuery, [articleId]);
+  static async get(articleId: number): Promise<IArticle> {
+    const article = await postgresClient.query(ArticleService.getArticleByIdQuery, [articleId]);
 
     if (article.rowCount) {
       return article.rows[0];
@@ -47,11 +73,11 @@ export default class ArticleService {
     }
   }
 
-  static async create(article: IArticle) {
+  static async create(article: IInputArticle): Promise<IArticle> {
     const isArticleInDb = await ArticleService.has(article.id);
 
     if (!isArticleInDb) {
-      const inserted = await postgresClient.query(`
+      const insertedResult = await postgresClient.query(`
         INSERT INTO articles(
           id,
           featured,
@@ -62,7 +88,7 @@ export default class ArticleService {
           summary,
           published_at
         ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        RETURNING ${ArticleService.querySelectAlias}
+        RETURNING ${ArticleService.querySelectAliases}
       `, [
         article.id,
         article.featured,
@@ -74,7 +100,25 @@ export default class ArticleService {
         article.publishedAt,
       ]);
 
-      return inserted.rows;
+      let inserted = insertedResult.rows[0];
+
+      if (article.events) {
+        for await (let event of article.events) {
+          await EventService.insertToArticle(event, inserted.id);
+        }
+      }
+
+      if (article.launches) {
+        for await (let launch of article.launches) {
+          await LaunchService.insertToArticle(launch, inserted.id);
+        }
+      }
+
+      if (article.events?.length || article.launches?.length) {
+        inserted = await ArticleService.get(inserted.id);
+      }
+
+      return inserted;
     } else {
       throw new AlreadyExistsError();
     }

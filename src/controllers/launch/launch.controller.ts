@@ -7,8 +7,8 @@ export default class LaunchController {
 
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
-      const { launchId, provider } = req.body;
-      const insertedLaunch = await LaunchService.create(provider, launchId);
+      const { id, provider } = req.body;
+      const insertedLaunch = await LaunchService.create(provider, id);
       res.status(201).json(insertedLaunch);
     } catch (error) {
       next(error);
