@@ -1,6 +1,7 @@
 {
   "name": "coodesh-backend-test",
   "version": "1.0.0",
+  "main": "src/app.ts",
   "repository": "https://github.com/viniciusaportela/coodesh-backend-test",
   "author": "viniciusaportela <vinicius.portela.stm@gmail.com>",
   "license": "MIT",
@@ -9,6 +10,8 @@
   },
   "scripts": {
     "start": "ts-node ./src/app.ts",
+    "build": "tsc",
+    "postinstall": "tsc",
     "dev": "nodemon ./src/app.ts",
     "scripts:syncArticlesWithApi": "ts-node ./src/scripts/run-sync-article-from-api.ts"
   },
