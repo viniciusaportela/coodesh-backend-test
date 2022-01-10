@@ -52,13 +52,13 @@ export default class LaunchService {
   }
 
   static async insertToArticle(launchId: string, articleId: number) {
-    const articleExists = ArticleModel.has(articleId);
+    const articleExists = await ArticleModel.has(articleId);
 
     if (!articleExists) {
       throw new NotFoundError("this article doesn't exists");
     }
 
-    const launchExists = LaunchModel.has(launchId)
+    const launchExists = await LaunchModel.has(launchId);
     if (!launchExists) {
       throw new NotFoundError("this launch doesn't exists");
     }

@@ -1,11 +1,11 @@
-import { ErrorCodes } from "../constants/error-codes";
+import { ErrorCodes, ErrorNumberCodes } from "../constants/error-codes";
 import { HttpError } from "./http-error";
 
 export class NotFoundError extends HttpError {
   constructor(description?: string) {
     super();
     this.name = "NotFoundError";
-    this.statusCode = 404;
+    this.statusCode = ErrorNumberCodes.NOT_FOUND;
     this.errorCode = ErrorCodes.NOT_FOUND;
     this.description = description;
 

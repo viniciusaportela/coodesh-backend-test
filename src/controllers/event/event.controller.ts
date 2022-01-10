@@ -19,7 +19,7 @@ export default class LaunchController {
     try {
       const { provider } = req.body;
       const { eventId } = req.params;
-      await EventService.update(eventId, provider);
+      await EventService.update(parseInt(eventId), provider);
       res.sendStatus(200);
     } catch (error) {
       next(error);
@@ -29,7 +29,7 @@ export default class LaunchController {
   static async delete(req: Request, res: Response, next: NextFunction) {
     try {
       const { eventId } = req.params;
-      await EventService.delete(eventId);
+      await EventService.delete(parseInt(eventId));
       res.sendStatus(200);
     } catch (error) {
       next(error);

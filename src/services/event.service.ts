@@ -52,13 +52,13 @@ export default class EventService {
   }
 
   static async insertToArticle(eventId: number, articleId: number) {
-    const articleExists = ArticleModel.has(articleId);
+    const articleExists = await ArticleModel.has(articleId);
 
     if (!articleExists) {
       throw new NotFoundError("this article doesn't exists");
     }
 
-    const eventExists = EventModel.has(eventId)
+    const eventExists = await EventModel.has(eventId)
     if (!eventExists) {
       throw new NotFoundError("this event doesn't exists");
     }

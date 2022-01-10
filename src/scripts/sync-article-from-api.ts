@@ -17,17 +17,17 @@ const IMPORT_MESSAGE_INTERVAL_TO_LOG = 100;
 
 export async function syncArticlesFromApi() {
   try {
-    console.log('Executing script syncArticlesWithApi...');
+    console.log('[syncArticlesFromApi] Executing script syncArticlesWithApi...');
 
     const response = await fetch(`${env.syncFetchApi}/articles/count`);
     const responseText = await response.text()
     const articlesCount = parseInt(responseText);
     let importedCount = 0;
 
-    const initialPage = await getLastPageFromCache();
+    const initialPage = (await getLastPageFromCache()) + 1;
 
     for (let page = initialPage; page < articlesCount / SYNC_ARTICLES_PER_PAGE; page += 1) {
-      if (page % IMPORT_MESSAGE_INTERVAL_TO_LOG === 0) console.log(`Importing page ${page}-${page + IMPORT_MESSAGE_INTERVAL_TO_LOG}`);
+      if (page % IMPORT_MESSAGE_INTERVAL_TO_LOG === 0) console.log(`[syncArticlesFromApi] Importing page ${page}-${page + IMPORT_MESSAGE_INTERVAL_TO_LOG}`);
       const response = await fetch(`${env.syncFetchApi}/articles?_sort=id&_limit=${SYNC_ARTICLES_PER_PAGE}&_start=${page * SYNC_ARTICLES_PER_PAGE}`);
       const articles = await response.json() as IArticle[];
 
@@ -65,9 +65,9 @@ export async function syncArticlesFromApi() {
       saveLastPageIndex(page);
     }
 
-    console.log(`Finished script syncArticlesWithApi, imported ${importedCount} articles`);
+    console.log(`[syncArticlesFromApi] Finished script syncArticlesWithApi, imported ${importedCount} articles`);
   } catch(error) {
-    console.error(`Something went wrong when trying to run the script "syncArticlesWithApi", error: ${error}, stack: ${error?.stack}`);
+    console.error(`[syncArticlesFromApi] Something went wrong when trying to run the script "syncArticlesWithApi", error: ${error}, stack: ${error?.stack}`);
 
     await MailService.send({
       to: env.reportReceiverEmail,

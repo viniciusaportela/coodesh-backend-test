@@ -10,9 +10,7 @@ export class EventValidation {
       .withMessage(ErrorCodes.SHOULD_BE_STRING),
     body("id")
       .optional()
-      .isString()
-      .withMessage(ErrorCodes.SHOULD_BE_STRING)
-      .isUUID()
-      .withMessage(ErrorCodes.INVALID_UUID),
+      .isInt()
+      .withMessage(ErrorCodes.SHOULD_BE_INT)
   ];
 }

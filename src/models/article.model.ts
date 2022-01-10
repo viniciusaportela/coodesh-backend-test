@@ -56,7 +56,7 @@ export default class ArticleModel {
   }
 
   static async get(id: number): Promise<IArticle> {
-    const result = await postgresClient.query(`${this.selectAndJoinArticlesQuery} ORDER BY id WHERE id = $1`, [id]); 
+    const result = await postgresClient.query(`${this.selectAndJoinArticlesQuery} WHERE id = $1`, [id]); 
     return result.rows[0];
   }
 

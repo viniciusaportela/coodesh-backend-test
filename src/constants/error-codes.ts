@@ -5,11 +5,10 @@ export enum ErrorCodes {
   NOT_FOUND = 'not_found',
   VALIDATION_ERROR = 'validation_error',
   PASSED_MAX_PAGINATION_LIMIT = 'passed_max_pagination_limit',
-  EXCEED_MAX_LENGTH = 'exceed_max_length',
 
   SHOULD_BE_STRING = 'should_be_string',
-  SHOULD_BE_ARRAY = 'should_be_array',
   SHOULD_BE_BOOLEAN = 'should_be_boolean',
+  SHOULD_BE_INT = 'should_be_int',
 
   INVALID_URL = 'invalid_url',
   INVALID_DATE = 'invalid_date',
@@ -19,4 +18,6 @@ export enum ErrorCodes {
 export enum ErrorNumberCodes {
   INTERNAL_ERROR = 500,
   NOT_FOUND = 404,
+  CONFLICT = 409,
+  UNPROCESSABLE_ENTITY = 422,
 }

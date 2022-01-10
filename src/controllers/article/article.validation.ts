@@ -12,9 +12,7 @@ export class ArticleValidation {
       .exists()
       .withMessage(ErrorCodes.MISSING_FIELD)
       .isString()
-      .withMessage(ErrorCodes.SHOULD_BE_STRING)
-      .isLength({ max: 125 })
-      .withMessage(ErrorCodes.EXCEED_MAX_LENGTH),
+      .withMessage(ErrorCodes.SHOULD_BE_STRING),
     body('url')
       .exists()
       .withMessage(ErrorCodes.MISSING_FIELD)
@@ -47,8 +45,8 @@ export class ArticleValidation {
       .withMessage(ErrorCodes.INVALID_DATE),
     body('events.*')
       .optional()
-      .isString()
-      .withMessage(ErrorCodes.SHOULD_BE_STRING),
+      .isInt()
+      .withMessage(ErrorCodes.SHOULD_BE_INT),
     body('launches.*')
       .optional()
       .isString()

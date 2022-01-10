@@ -1,4 +1,4 @@
-import { ErrorCodes } from "../constants/error-codes";
+import { ErrorCodes, ErrorNumberCodes } from "../constants/error-codes";
 import { ValidationError as ExpressValidationError } from 'express-validator'
 import { HttpError } from "./http-error";
 
@@ -14,7 +14,7 @@ export class ValidationError extends HttpError {
     super();
 
     this.name = "ValidationError";
-    this.statusCode = 422;
+    this.statusCode = ErrorNumberCodes.UNPROCESSABLE_ENTITY;
     this.errorCode = ErrorCodes.VALIDATION_ERROR;
     this.errors = errorList.map(error => ({
       errorCode: error.msg,
