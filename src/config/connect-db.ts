@@ -5,7 +5,13 @@ export let postgresClient: pg.Client;
 
 export function connectDb() {
   return new Promise((resolve, reject) => {
-    postgresClient = new pg.Client(`postgres://${envConfig.postgresUser}:${envConfig.postgresPassword}@${envConfig.postgresHost}:${envConfig.postgresPort}/${envConfig.postgresDatabase}`);
+    console.log(`postgres://${envConfig.postgresUser}:${envConfig.postgresPassword}@${envConfig.postgresHost}:${envConfig.postgresPort}/${envConfig.postgresDatabase}`);
+    postgresClient = new pg.Client({
+      connectionString: `postgres://${envConfig.postgresUser}:${envConfig.postgresPassword}@${envConfig.postgresHost}:${envConfig.postgresPort}/${envConfig.postgresDatabase}`,
+      ...(envConfig.production && { ssl: {
+        rejectUnauthorized: false
+      }})
+    });
     postgresClient.connect(err => {
       if (err) reject()
       resolve(true);

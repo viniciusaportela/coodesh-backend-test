@@ -15,4 +15,5 @@ export const envConfig = {
   postgresPassword: process.env.POSTGRES_PASSWORD,
   port: process.env.PORT || 8080,
   swaggerApiServer: process.env.SWAGGER_API_SERVER,
+  production: process.env.NODE_ENV === 'production'
 };
