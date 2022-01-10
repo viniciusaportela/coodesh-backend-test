@@ -1,10 +1,10 @@
 import { connectDb, postgresClient } from "../config/connectDb";
-import { syncArticlesWithApi } from "./syncArticlesWithApi";
+import { syncArticlesFromApi } from "./syncArticlesFromApi";
 
 ;(async () => {
   await connectDb();
   try {
-    await syncArticlesWithApi();
+    await syncArticlesFromApi();
   } catch(e) {}
   await postgresClient.end();
 })()

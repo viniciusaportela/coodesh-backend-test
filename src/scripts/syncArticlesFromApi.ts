@@ -9,7 +9,7 @@ import LaunchService from "../services/launch.service";
 
 const IMPORT_MESSAGE_INTERVAL = 100;
 
-export async function syncArticlesWithApi() {
+export async function syncArticlesFromApi() {
   try {
     console.log('Executing script syncArticlesWithApi...');
 

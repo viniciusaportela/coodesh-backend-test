@@ -7,11 +7,11 @@ import Routes from "./routes";
 
 import { config } from './config/config'
 import { handleErrors } from "./middlewares/handleErrors.middleware";
-import { syncArticlesWithApi } from "./scripts/syncArticlesWithApi";
+import { syncArticlesFromApi } from "./scripts/syncArticlesFromApi";
 import { connectDb } from "./config/connectDb";
 
 async function configureCron() {
-  cron.schedule('0 9 * * * *', syncArticlesWithApi);
+  cron.schedule('0 9 * * * *', syncArticlesFromApi);
 }
 
 function setupMiddlewares(app: express.Express) {
