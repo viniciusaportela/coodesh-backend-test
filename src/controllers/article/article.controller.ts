@@ -1,6 +1,9 @@
 import { NextFunction, Request, Response } from "express";
+import { IArticle, IFormattedArticle } from "../../typings/article.interface";
 import ArticleService from "../../services/article.service";
 import { ArticleValidation } from "./article.validation";
+import { PAGINATION_MAX_LIMIT } from "../../constants/config";
+import { PassedPaginationLimitError } from "../../errors/PassedPaginationLimit";
 
 export default class ArticleController {
   static validation = ArticleValidation;
@@ -9,7 +12,12 @@ export default class ArticleController {
     try {
       const { limit, page } = req.body;
 
+      if (limit > PAGINATION_MAX_LIMIT) {
+        throw new PassedPaginationLimitError();
+      }
+
       const articles = await ArticleService.list(limit, page);
+
       res.json(articles);
     } catch (error) {
       next(error);
@@ -19,8 +27,7 @@ export default class ArticleController {
   static async get(req: Request, res: Response, next: NextFunction) {
     try {
       const { articleId } = req.params;
-
-      const article = await ArticleService.get(articleId);
+      const article = await ArticleService.get(parseInt(articleId));
       res.json(article);
     } catch (error) {
       next(error);
@@ -28,22 +35,20 @@ export default class ArticleController {
   }
 
   static async create(req: Request, res: Response, next: NextFunction) {
-    const article = req.body;
-
     try {
-      const inserted = await ArticleService.create(article);
-      res.status(201).json(inserted);
+      const article = req.body;
+      const insertedArticle = await ArticleService.create(article);
+      res.status(201).json(insertedArticle);
     } catch (error) {
       next(error);
     }
   }
 
   static async update(req: Request, res: Response, next: NextFunction) {
-    const article = req.body;
-    const { articleId } = req.params;
-
     try {
-      await ArticleService.update(articleId, article);
+      const article = req.body;
+      const { articleId } = req.params;
+      await ArticleService.update(parseInt(articleId), article);
       res.sendStatus(200);
     } catch (error) {
       next(error);
@@ -51,10 +56,9 @@ export default class ArticleController {
   }
 
   static async delete(req: Request, res: Response, next: NextFunction) {
-    const { articleId } = req.params;
-
     try {
-      await ArticleService.delete(articleId);
+      const { articleId } = req.params;
+      await ArticleService.delete(parseInt(articleId));
       res.sendStatus(200);
     } catch (error) {
       next(error);

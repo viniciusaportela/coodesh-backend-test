@@ -3,17 +3,47 @@ import { ErrorCodes } from "../../constants/errorCodes";
 
 export class ArticleValidation {
   static insert = [
-    body("name")
+    body("featured")
       .exists()
       .withMessage(ErrorCodes.MISSING_FIELD)
-      .isString()
-      .withMessage(ErrorCodes.SHOULD_BE_STRING),
-    body("email")
+      .isBoolean()
+      .withMessage(ErrorCodes.SHOULD_BE_BOOLEAN),
+    body("title")
       .exists()
       .withMessage(ErrorCodes.MISSING_FIELD)
       .isString()
       .withMessage(ErrorCodes.SHOULD_BE_STRING)
-      .isEmail()
-      .withMessage(ErrorCodes.INVALID_EMAIL),
+      .isLength({ max: 125 })
+      .withMessage(ErrorCodes.EXCEED_MAX_LENGTH),
+    body('url')
+      .exists()
+      .withMessage(ErrorCodes.MISSING_FIELD)
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING)
+      .isURL()
+      .withMessage(ErrorCodes.INVALID_URL),
+    body('imageUrl')
+      .exists()
+      .withMessage(ErrorCodes.MISSING_FIELD)
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING)
+      .isURL()
+      .withMessage(ErrorCodes.INVALID_URL),
+    body('newsSite')
+      .exists()
+      .withMessage(ErrorCodes.MISSING_FIELD)
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING),
+    body('summary')
+      .exists()
+      .withMessage(ErrorCodes.MISSING_FIELD)
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING),
+    body('publishedAt')
+      .optional()
+      .isString()
+      .withMessage(ErrorCodes.SHOULD_BE_STRING)
+      .isISO8601()
+      .withMessage(ErrorCodes.INVALID_DATE),
   ];
 }

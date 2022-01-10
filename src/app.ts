@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cron from 'node-cron'
 import cors from "cors";
@@ -9,14 +8,10 @@ import Routes from "./routes";
 import { config } from './config/config'
 import { handleErrors } from "./middlewares/handleErrors.middleware";
 import { syncArticlesWithApi } from "./scripts/syncArticlesWithApi";
+import { connectDb } from "./config/connectDb";
 
 async function configureCron() {
   cron.schedule('0 9 * * * *', syncArticlesWithApi);
-}
-
-async function initializeMongoConnection() {
-  const mongoUri = `mongodb+srv://${config.mongoUser}:${config.mongoPassword}@${config.mongoHost}/${config.mongoDatabase}`;
-  await mongoose.connect(mongoUri);
 }
 
 function setupMiddlewares(app: express.Express) {
@@ -30,7 +25,7 @@ async function initServer() {
   try {
     configureCron();
 
-    await initializeMongoConnection();
+    await connectDb();
 
     const app = express();
 
