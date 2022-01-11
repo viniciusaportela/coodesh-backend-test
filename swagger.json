@@ -63,7 +63,7 @@
       "post": {
         "tags": ["Articles"],
         "summary": "Creates an article",
-        "description": "Creates an article. The **events** should be an array of event ids and the **launches** should be an array of launch ids. You should create the events and launches before using it. Use the `/events` and `/launches` endpoints for that. The **id** is required.",
+        "description": "Creates an article. The **events** should be an array of event ids and the **launches** should be an array of launch ids. You should create the events and launches before using it. Use the `/events` and `/launches` endpoints for that.",
         "requestBody": {
           "content": {
             "application/json": {
