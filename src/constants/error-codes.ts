@@ -12,7 +12,8 @@ export enum ErrorCodes {
 
   INVALID_URL = 'invalid_url',
   INVALID_DATE = 'invalid_date',
-  INVALID_UUID = 'invalid_uuid'
+  INVALID_UUID = 'invalid_uuid',
+  INVALID_LENGTH = 'invalid_length'
 }
 
 export enum ErrorNumberCodes {

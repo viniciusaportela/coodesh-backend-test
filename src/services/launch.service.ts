@@ -15,8 +15,8 @@ export default class LaunchService {
     }
   }
 
-  static async list() {
-    const launches = await LaunchModel.getMany();
+  static async list(limit?: number, page?: number) {
+    const launches = await LaunchModel.getMany(limit, page);
     return launches;
   }
 

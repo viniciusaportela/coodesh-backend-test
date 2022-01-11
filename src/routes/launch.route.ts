@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { PAGINATION_VALIDATION_CHAIN } from "../constants/paginationValidation";
 
 import LaunchController from "../controllers/launch/launch.controller";
 import { handleValidatorErrors } from "../middlewares/handle-validator-errors.middleware";
@@ -7,6 +8,8 @@ const router = Router();
 
 router.get(
   "/",
+  PAGINATION_VALIDATION_CHAIN,
+  handleValidatorErrors,
   LaunchController.list
 );
 

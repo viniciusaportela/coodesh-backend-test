@@ -15,8 +15,8 @@ export default class EventService {
     }
   }
 
-  static async list() {
-    const events = await EventModel.getMany();
+  static async list(limit?: number, page?: number) {
+    const events = await EventModel.getMany(limit, page);
     return events;
   }
 

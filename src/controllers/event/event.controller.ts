@@ -1,4 +1,6 @@
 import { NextFunction, Request, Response } from "express";
+import { PAGINATION_MAX_LIMIT } from "../../constants/config";
+import { PassedPaginationLimitError } from "../../errors/passed-pagination-limit";
 import EventService from "../../services/event.service";
 import { EventValidation } from "./event.validation";
 
@@ -15,9 +17,15 @@ export default class LaunchController {
     }
   }
 
-  static async list(_req: Request, res: Response, next: NextFunction) {
+  static async list(req: Request, res: Response, next: NextFunction) {
     try {
-      const events = await EventService.list();
+      const { limit, page } = req.query as Record<string, string>;
+
+      if (parseInt(limit) > PAGINATION_MAX_LIMIT) {
+        throw new PassedPaginationLimitError();
+      }
+
+      const events = await EventService.list(parseInt(limit), parseInt(page));
       res.json(events);
     } catch (error) {
       next(error);

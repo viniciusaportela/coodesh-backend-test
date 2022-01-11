@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { PAGINATION_VALIDATION_CHAIN } from "../constants/paginationValidation";
 
 import EventController from "../controllers/event/event.controller";
 import { handleValidatorErrors } from "../middlewares/handle-validator-errors.middleware";
@@ -7,6 +8,8 @@ const router = Router();
 
 router.get(
   "/",
+  PAGINATION_VALIDATION_CHAIN,
+  handleValidatorErrors,
   EventController.list
 );
 

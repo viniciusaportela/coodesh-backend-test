@@ -1,4 +1,5 @@
-import { body, param } from "express-validator";
+import { body, param, query } from "express-validator";
+import { PAGINATION_MAX_LIMIT } from "../../constants/config";
 import { ErrorCodes } from "../../constants/error-codes";
 
 export class ArticleValidation {

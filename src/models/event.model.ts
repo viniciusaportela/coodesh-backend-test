@@ -1,4 +1,5 @@
 import { postgresClient } from "../config/connect-db";
+import { DEFAULT_PAGINATION_LIMIT, DEFAULT_PAGINATION_PAGE } from "../constants/defaults";
 import { IEvent } from "../typings/event.interface";
 
 export default class EventModel {
@@ -12,8 +13,11 @@ export default class EventModel {
     return result.rows[0];
   }
 
-  static async getMany() {
-    const result = await postgresClient.query('SELECT * FROM events');
+  static async getMany(limit?: number, page?: number) {
+    const finalLimit = limit || DEFAULT_PAGINATION_LIMIT;
+    const skipCount = ((page || DEFAULT_PAGINATION_PAGE) - 1) * finalLimit;
+
+    const result = await postgresClient.query('SELECT * FROM events LIMIT $1 OFFSET $2', [finalLimit, skipCount]);
     return result.rows;
   }
 
