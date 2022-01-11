@@ -13,7 +13,15 @@ export const envConfig = {
   postgresPort: process.env.POSTGRES_PORT,
   postgresUser: process.env.POSTGRES_USER,
   postgresPassword: process.env.POSTGRES_PASSWORD,
+  testPostgresHost: process.env.TEST_POSTGRES_HOST,
+  testPostgresDatabase: process.env.TEST_POSTGRES_DATABASE,
+  testPostgresPort: process.env.TEST_POSTGRES_PORT,
+  testPostgresUser: process.env.TEST_POSTGRES_USER,
+  testPostgresPassword: process.env.TEST_POSTGRES_PASSWORD,
+  testPort: process.env.TEST_PORT,
   port: process.env.PORT || 8080,
   swaggerApiServer: process.env.SWAGGER_API_SERVER,
-  production: process.env.NODE_ENV === 'production'
+
+  production: process.env.NODE_ENV === 'production',
+  test: process.env.NODE_ENV === 'test'
 };
