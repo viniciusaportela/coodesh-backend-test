@@ -120,6 +120,11 @@ describe('Articles Suite Case', () => {
   })
 
   describe('PUT /articles/:articleId', () => {
+    it('should return an validation-error error', async () => {
+      const response = await request(app).put('/articles/1');
+      expect(response.body.error).toBe(ErrorCodes.VALIDATION_ERROR);
+    });
+
     it("should return an error when the article doesn't exists", async () => {
       const response = await request(app).put('/articles/1').send(articleUpdatedInputMock);
 

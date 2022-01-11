@@ -56,6 +56,11 @@ describe('Events Suite Case', () => {
   })
 
   describe('PUT /events/:eventId', () => {
+    it('should return an validation-error error', async () => {
+      const response = await request(app).put('/events/2');
+      expect(response.body.error).toBe(ErrorCodes.VALIDATION_ERROR);
+    });
+
     it("should return an error when the event doesn't exists", async () => {
       const response = await request(app).put('/events/2').send(eventMock);
 

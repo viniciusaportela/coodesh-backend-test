@@ -56,6 +56,11 @@ describe('Launches Suite Case', () => {
   })
 
   describe('PUT /launches/:launchId', () => {
+    it('should return an validation-error error', async () => {
+      const response = await request(app).put(`/launches/${launchMock.id}`);
+      expect(response.body.error).toBe(ErrorCodes.VALIDATION_ERROR);
+    });
+
     it("should return an error when the launch doesn't exists", async () => {
       const response = await request(app).put(`/launches/${launchMock.id}`).send(launchMock);
 
