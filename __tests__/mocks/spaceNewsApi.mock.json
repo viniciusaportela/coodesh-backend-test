@@ -1,0 +1,154 @@
+[
+  {
+    "id": 13547,
+    "title": "IXPE X-ray observatory completes commissioning, eyes Cassiopeia A for calibration",
+    "url": "https://www.nasaspaceflight.com/2022/01/ixpe-post-launch-update/",
+    "imageUrl": "https://www.nasaspaceflight.com/wp-content/uploads/2022/01/IXPE.jpg",
+    "newsSite": "NASA Spaceflight",
+    "summary": "The pioneering Imaging X-ray Polarimeter Explorer (IXPE) telescope, the first observatory in space to perform detailed polarimetry of some of the highest-energy objects the universe has to offer, has ended its highly-successful commissioning phase just over 30 days after lifting off from the Kennedy Space Center on December 9, 2021, on a SpaceX Falcon 9 rocket.",
+    "publishedAt": "2022-01-11T00:03:35.000Z",
+    "updatedAt": "2022-01-11T00:12:58.720Z",
+    "featured": false,
+    "launches": [{
+      "id": "c660df6f-7e33-4c90-a0f5-b27c8cb4c974",
+      "provider": "provider"
+    }],
+    "events": []
+  },
+  {
+    "id": 13546,
+    "title": "SpaceX goes all-in on Starship configuration for second-gen Starlink",
+    "url": "https://spacenews.com/spacex-goes-all-in-on-starship-configuration-for-second-gen-starlink/",
+    "imageUrl": "https://spacenews.com/wp-content/uploads/2021/10/ship20-staticfire.jpg",
+    "newsSite": "SpaceNews",
+    "summary": "SpaceX has dropped a plan to use Falcon 9 to launch the 30,000 satellites in its proposed second-generation Starlink broadband constellation, and is instead focusing on a configuration leveraging its upcoming Starship vehicle.",
+    "publishedAt": "2022-01-10T22:52:45.000Z",
+    "updatedAt": "2022-01-10T22:52:45.111Z",
+    "featured": false,
+    "launches": [],
+    "events": [{
+      "id": 2,
+      "provider": "provider"
+    }]
+  },
+  {
+    "id": 13545,
+    "title": "Biden nominates Navy admiral to run National Geospatial Intelligence Agency",
+    "url": "https://spacenews.com/biden-nominates-navy-admiral-to-run-national-geospatial-intelligence-agency/",
+    "imageUrl": "https://spacenews.com/wp-content/uploads/2022/01/18814723_10154854399489118_7031074132706243128_o.jpg",
+    "newsSite": "SpaceNews",
+    "summary": "President Biden has nominated U.S. Navy Vice Adm. Frank Whitworth to be the next director of the National Geospatial Intelligence Agency, the. Defense Department announced Jan. 10.",
+    "publishedAt": "2022-01-10T18:42:46.000Z",
+    "updatedAt": "2022-01-10T18:42:46.163Z",
+    "featured": false,
+    "launches": [{
+      "id": "c660df6f-7e33-4c90-a0f5-b27c8cb4c974",
+      "provider": "provider"
+    }],
+    "events": [{
+      "id": 2,
+      "provider": "provider"
+    }]
+  },
+  {
+    "id": 13544,
+    "title": "NASA Invites Media to Meet New Chief Scientist, Climate Advisor",
+    "url": "http://www.nasa.gov/press-release/nasa-invites-media-to-meet-new-chief-scientist-climate-advisor",
+    "imageUrl": "https://www.nasa.gov/sites/default/files/thumbnails/image/nasa-logo-web-rgb_0.jpg?itok=mrBnB_c9",
+    "newsSite": "NASA",
+    "summary": "NASA will host a media teleconference at 11 a.m. EST Tuesday, Jan. 11, to introduce and discuss the role of the agency’s new chief scientist and senior climate advisor.",
+    "publishedAt": "2022-01-10T18:32:00.000Z",
+    "updatedAt": "2022-01-10T18:32:57.171Z",
+    "featured": false,
+    "launches": [],
+    "events": []
+  },
+  {
+    "id": 13543,
+    "title": "Defense Innovation Unit taps Lyten to develop high-performance batteries for small satellites",
+    "url": "https://spacenews.com/defense-innovation-unit-taps-lyten-to-develop-high-performance-batteries-for-small-satellites/",
+    "imageUrl": "https://spacenews.com/wp-content/uploads/2022/01/Screen-Shot-2022-01-10-at-1.02.31-PM-e1641837929547.png",
+    "newsSite": "SpaceNews",
+    "summary": "Lyten, a battery manufacturer based in California, has prototyped an advanced battery design for small satellites under a contract from the Defense Innovation Unit.",
+    "publishedAt": "2022-01-10T18:22:45.000Z",
+    "updatedAt": "2022-01-10T18:22:45.566Z",
+    "featured": false,
+    "launches": [],
+    "events": []
+  },
+  {
+    "id": 13542,
+    "title": "NASA Announces New Chief Scientist, Senior Climate Advisor",
+    "url": "http://www.nasa.gov/press-release/nasa-announces-new-chief-scientist-senior-climate-advisor",
+    "imageUrl": "https://www.nasa.gov/sites/default/files/thumbnails/image/nhq202201100001_002.jpg?itok=FALm4x7Q",
+    "newsSite": "NASA",
+    "summary": "NASA Administrator Bill Nelson announced that Dr. Katherine Calvin will serve the agency in dual roles as chief scientist and senior climate advisor effective Monday.",
+    "publishedAt": "2022-01-10T17:22:00.000Z",
+    "updatedAt": "2022-01-10T17:22:55.664Z",
+    "featured": false,
+    "launches": [],
+    "events": []
+  },
+  {
+    "id": 13539,
+    "title": "SpaceX simulates lifting Starship with launch tower ‘arms’",
+    "url": "https://www.teslarati.com/spacex-launch-tower-arms-starship-lift-simulation/",
+    "imageUrl": "https://www.teslarati.com/wp-content/uploads/2022/01/Starbase-010922-NASASpaceflight-bocachicagal-tower-arms-testing-1-crop-c.jpg",
+    "newsSite": "Teslarati",
+    "summary": "SpaceX has taken Starbase’s rocket-catching launch tower ‘arms’ to new heights during the latest series of proof tests. That process began in...",
+    "publishedAt": "2022-01-10T16:13:05.000Z",
+    "updatedAt": "2022-01-10T16:13:16.365Z",
+    "featured": false,
+    "launches": [],
+    "events": []
+  },
+  {
+    "id": 13540,
+    "title": "All hail the Ariane 5 rocket, which doubled the Webb telescope’s lifetime",
+    "url": "https://arstechnica.com/science/2022/01/all-hail-the-ariane-5-rocket-which-doubled-the-webb-telescopes-lifetime/",
+    "imageUrl": "https://cdn.arstechnica.net/wp-content/uploads/2022/01/53070_A4.jpg",
+    "newsSite": "Arstechnica",
+    "summary": "\"It would have been criminal not to do it.\"",
+    "publishedAt": "2022-01-10T14:48:36.000Z",
+    "updatedAt": "2022-01-10T21:57:25.922Z",
+    "featured": false,
+    "launches": [
+      {
+        "id": "d0fa4bb2-80ea-4808-af08-7785dde53bf6",
+        "provider": "Launch Library 2"
+      }
+    ],
+    "events": []
+  },
+  {
+    "id": 13548,
+    "title": "SOFIA makes case for continued operations",
+    "url": "https://spacenews.com/sofia-makes-case-for-continued-operations/",
+    "imageUrl": "https://spacenews.com/wp-content/uploads/2014/11/SOFIA_DLRNASA4X3.jpg",
+    "newsSite": "SpaceNews",
+    "summary": "Officials with a NASA airborne observatory responded to a stinging rebuke in the latest astrophysics decadal survey by arguing that the facility, targeted for termination, is essential to the agency’s broader science program.",
+    "publishedAt": "2022-01-10T04:52:44.000Z",
+    "updatedAt": "2022-01-11T04:52:44.996Z",
+    "featured": false,
+    "launches": [],
+    "events": []
+  },
+  {
+    "id": 13537,
+    "title": "SpaceX preparing for third rideshare launch with dozens of small satellites",
+    "url": "https://www.teslarati.com/spacex-transporter-3-rideshare-launch-prep/",
+    "imageUrl": "https://www.teslarati.com/wp-content/uploads/2021/01/Transporter-1-143-satellites-payload-stack-Jan-2021-SpaceX-3-flip-c.jpg",
+    "newsSite": "Teslarati",
+    "summary": "One week after SpaceX and the world’s first orbital launch of 2022, the company is a few days out from its second...",
+    "publishedAt": "2022-01-09T19:13:10.000Z",
+    "updatedAt": "2022-01-09T21:03:47.779Z",
+    "featured": false,
+    "launches": [
+      {
+        "id": "c660df6f-7e33-4c90-a0f5-b27c8cb4c974",
+        "provider": "Launch Library 2"
+      }
+    ],
+    "events": []
+  }
+]

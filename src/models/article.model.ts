@@ -61,10 +61,13 @@ export default class ArticleModel {
   }
 
   static async getMany(limit?: number, page?: number): Promise<IArticle[]> {
+    const finalLimit = limit || DEFAULT_PAGINATION_LIMIT;
+    const skipCount = ((page || DEFAULT_PAGINATION_PAGE) - 1) * finalLimit;
+
     return (await postgresClient
       .query(
         `${this.selectAndJoinArticlesQuery} ORDER BY id LIMIT $1 OFFSET $2`,
-        [limit || DEFAULT_PAGINATION_LIMIT, (page || DEFAULT_PAGINATION_PAGE) - 1]
+        [finalLimit, skipCount]
       )).rows;
   }
 

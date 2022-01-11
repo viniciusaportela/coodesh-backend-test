@@ -2,7 +2,7 @@ import express from "express";
 import cron from 'node-cron'
 
 import { envConfig } from './config/env'
-import { syncArticlesFromApi } from "./scripts/sync-article-from-api";
+import { syncArticlesFromApi } from "./scripts/sync-article-from-api/sync-article-from-api";
 import { connectDb } from "./config/connect-db";
 import { setupSwagger } from "./config/swagger";
 import { setupMiddlewares } from "./config/setupMiddlewares";

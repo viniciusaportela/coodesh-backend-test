@@ -1,4 +1,4 @@
-import { connectDb, postgresClient } from "../config/connect-db";
+import { connectDb, postgresClient } from "../../config/connect-db";
 import { syncArticlesFromApi } from "./sync-article-from-api";
 
 ;(async () => {

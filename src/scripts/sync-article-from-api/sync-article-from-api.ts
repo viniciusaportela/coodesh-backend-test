@@ -1,17 +1,16 @@
-import MailService from "../services/mail.service";
-import { envConfig } from "../config/env";
-import { SYNC_ARTICLES_PER_PAGE } from "../constants/config";
-import { IArticle } from "../typings/article.interface";
-import ArticleService from "../services/article.service";
+import MailService from "../../services/mail.service";
+import { envConfig } from "../../config/env";
+import { SYNC_ARTICLES_PER_PAGE } from "../../constants/config";
+import { IArticle } from "../../typings/article.interface";
+import ArticleService from "../../services/article.service";
 import fetch from 'node-fetch';
-import EventService from "../services/event.service";
-import LaunchService from "../services/launch.service";
-import ArticleModel from "../models/article.model";
-import EventModel from "../models/event.model";
-import LaunchModel from "../models/launch.model";
-import { mkdir, readFile, writeFile } from "fs/promises";
-import { join } from "path";
-import { existsSync } from "fs";
+import EventService from "../../services/event.service";
+import LaunchService from "../../services/launch.service";
+import ArticleModel from "../../models/article.model";
+import EventModel from "../../models/event.model";
+import LaunchModel from "../../models/launch.model";
+import { getLastPageFromCache, saveLastPageIndex } from "./sync-article-from-api-cache";
+
 
 const IMPORT_MESSAGE_INTERVAL_TO_LOG = 100;
 
@@ -27,7 +26,10 @@ export async function syncArticlesFromApi() {
     const initialPage = (await getLastPageFromCache()) + 1;
 
     for (let page = initialPage; page < articlesCount / SYNC_ARTICLES_PER_PAGE; page += 1) {
-      if (page % IMPORT_MESSAGE_INTERVAL_TO_LOG === 0) console.log(`[syncArticlesFromApi] Importing page ${page}-${page + IMPORT_MESSAGE_INTERVAL_TO_LOG}`);
+      if (page % IMPORT_MESSAGE_INTERVAL_TO_LOG === 0) {
+        console.log(`[syncArticlesFromApi] Importing page ${page}-${page + IMPORT_MESSAGE_INTERVAL_TO_LOG}`);
+      }
+
       const response = await fetch(`${envConfig.syncFetchApi}/articles?_sort=id&_limit=${SYNC_ARTICLES_PER_PAGE}&_start=${page * SYNC_ARTICLES_PER_PAGE}`);
       const articles = await response.json() as IArticle[];
 
@@ -88,29 +90,4 @@ export async function syncArticlesFromApi() {
       `
     });
   }
-}
-
-async function getLastPageFromCache() {
-  const cacheFilePath = join(__dirname, './data/sync-articles-from-api.json');
-  const cacheFileExists = existsSync(cacheFilePath);
-
-  if (!cacheFileExists) {
-    return -1;
-  }
-
-  const cacheFileRaw = await readFile(cacheFilePath, 'utf-8');
-  const cacheFile = JSON.parse(cacheFileRaw);
-
-  return cacheFile.lastPage;
-}
-
-async function saveLastPageIndex(page: number) {
-  const dataFolderPath = join(__dirname, './data');
-
-  const dataFolderExists = existsSync(dataFolderPath);
-  if (!dataFolderExists) {
-    await mkdir(dataFolderPath);
-  }
-
-  await writeFile(join(dataFolderPath, 'sync-articles-from-api.json'), JSON.stringify({ lastPage: page }));
 }
