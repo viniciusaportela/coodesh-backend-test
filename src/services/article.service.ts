@@ -71,8 +71,8 @@ export default class ArticleService {
 
       await ArticleModel.update(articleId, article);
 
-      const eventsToRemove = articleInDb.events.filter(event => !article.events.includes(event.id));
-      const eventsIdsToAdd = article.events.filter(eventId => 
+      const eventsToRemove = articleInDb.events.filter(event => !(article.events || []).includes(event.id));
+      const eventsIdsToAdd = (article.events || []).filter(eventId => 
         articleInDb.events.findIndex(event => event.id === eventId) === -1
       );
 
@@ -85,8 +85,8 @@ export default class ArticleService {
         })
       ])
 
-      const launchesToRemove = articleInDb.launches.filter(launch => !article.launches.includes(launch.id));
-      const launchesToAdd = article.launches.filter(launchId => 
+      const launchesToRemove = articleInDb.launches.filter(launch => !(article.launches || []).includes(launch.id));
+      const launchesToAdd = (article.launches || []).filter(launchId => 
         articleInDb.launches.findIndex(launch => launch.id === launchId) === -1
       );
 

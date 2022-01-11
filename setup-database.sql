@@ -8,7 +8,7 @@ CREATE TABLE articles (
     image_url TEXT NOT NULL,
     news_site TEXT NOT NULL,
     summary TEXT NOT NULL,
-    published_at timestamp NOT NULL DEFAULT NOW()
+    published_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW()
 );
 
 CREATE TABLE events (

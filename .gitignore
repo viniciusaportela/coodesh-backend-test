@@ -3,4 +3,3 @@ node_modules/
 build/
 src/scripts/data/
 npm-debug.log
-postgres

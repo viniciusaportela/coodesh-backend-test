@@ -1,10 +1,11 @@
 import { IEvent } from "./event.interface";
 import { ILaunch } from "./launch.interface";
 
-export interface IInputArticle extends Omit<IRawArticle, 'publishedAt'> {
+export interface IInputArticle extends Omit<IRawArticle, 'publishedAt' | 'id'> {
+  id?: number;
   publishedAt: string;
-  launches: string[];
-  events: number[];
+  launches?: string[];
+  events?: number[];
 }
 
 export interface IArticle extends Omit<IRawArticle, 'publishedAt'> {

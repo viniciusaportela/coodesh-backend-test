@@ -9,7 +9,7 @@ export default class ArticleModel {
     title,
     url,
     image_url AS "imageUrl",
-    news_site AS "newSite",
+    news_site AS "newsSite",
     summary,
     published_at AS "publishedAt"
   `

@@ -9,8 +9,6 @@ export async function handleErrors(
   res: Response,
   _next: NextFunction
 ) {
-  console.error(error);
-
   res.status(error?.statusCode || 500).json(
     error instanceof HttpError
       ? {
