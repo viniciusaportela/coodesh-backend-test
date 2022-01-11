@@ -1,5 +1,10 @@
 {
   "openapi": "3.0.0",
+  "servers": [
+    {
+      "url": "https://localhost:8082"
+    }
+  ],
   "info": {
     "description": "Space Flight Articles API, based on [Spaceflight News API](https://api.spaceflightnewsapi.net/v3/documentation)",
     "version": "1.0.0",
@@ -63,7 +68,7 @@
       "post": {
         "tags": ["Articles"],
         "summary": "Creates an article",
-        "description": "Creates an article. The **events** should be an array of event ids and the **launches** should be an array of launch ids. You should create the events and launches before using it. Use the `/events` and `/launches` endpoints for that.",
+        "description": "Creates an article. The **events** should be an array of event ids and the **launches** should be an array of launch ids. You should create the events and launches before using it. Use the `/events` and `/launches` endpoints for that. The **id** is required.",
         "requestBody": {
           "content": {
             "application/json": {
@@ -219,6 +224,35 @@
       }
     },
     "/events": {
+      "get": {
+        "tags": ["Events"],
+        "summary": "Get a list of events",
+        "responses": {
+          "200": {
+            "description": "A list of events",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": ["Events"],
         "summary": "Creates an event",
@@ -249,6 +283,43 @@
       }
     },
     "/events/{eventId}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "description": "ID of event",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "tags": ["Events"],
+        "summary": "Get an event by ID",
+        "responses": {
+          "200": {
+            "description": "An event",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "parameters": [
           {
@@ -321,6 +392,35 @@
       }
     },
     "/launches": {
+      "get": {
+        "tags": ["Launches"],
+        "summary": "Get a list of launches",
+        "responses": {
+          "200": {
+            "description": "A list of launches",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Launch"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      },
       "post": {
         "tags": ["Launches"],
         "summary": "Creates a launch",
@@ -351,6 +451,43 @@
       }
     },
     "/launches/{launchId}": {
+      "get": {
+        "parameters": [
+          {
+            "name": "launchId",
+            "in": "path",
+            "description": "ID of launch",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "tags": ["Launches"],
+        "summary": "Get an launch by ID",
+        "responses": {
+          "200": {
+            "description": "An launch",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Launch"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFound"
+                }
+              }
+            }
+          }
+        }
+      },
       "delete": {
         "parameters": [
           {
@@ -359,7 +496,7 @@
             "description": "ID of launch",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],
@@ -389,7 +526,7 @@
             "description": "ID of launch",
             "required": true,
             "schema": {
-              "type": "integer"
+              "type": "string"
             }
           }
         ],

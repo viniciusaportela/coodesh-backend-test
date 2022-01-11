@@ -15,6 +15,11 @@ export default class LaunchService {
     }
   }
 
+  static async list() {
+    const launches = await LaunchModel.getMany();
+    return launches;
+  }
+
   static async create(provider: string, launchId?: string) {
     let isLaunchInDb = false
     if (launchId) {

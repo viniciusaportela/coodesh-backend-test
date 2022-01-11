@@ -15,6 +15,11 @@ export default class EventService {
     }
   }
 
+  static async list() {
+    const events = await EventModel.getMany();
+    return events;
+  }
+
   static async create(provider: string, eventId?: number) {
     let isEventInDb = false
     if (eventId) {

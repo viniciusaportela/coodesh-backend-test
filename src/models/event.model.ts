@@ -12,6 +12,11 @@ export default class EventModel {
     return result.rows[0];
   }
 
+  static async getMany() {
+    const result = await postgresClient.query('SELECT * FROM events');
+    return result.rows;
+  }
+
   static async create(event: IEvent) {
     const result = await postgresClient.query(`
         INSERT INTO events(

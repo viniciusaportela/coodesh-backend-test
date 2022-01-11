@@ -11,7 +11,6 @@ import EventModel from "../../models/event.model";
 import LaunchModel from "../../models/launch.model";
 import { getLastPageFromCache, saveLastPageIndex } from "./sync-article-from-api-cache";
 
-
 const IMPORT_MESSAGE_INTERVAL_TO_LOG = 100;
 
 export async function syncArticlesFromApi() {

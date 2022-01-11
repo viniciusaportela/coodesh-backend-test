@@ -5,11 +5,21 @@ import { handleValidatorErrors } from "../middlewares/handle-validator-errors.mi
 
 const router = Router();
 
+router.get(
+  "/",
+  EventController.list
+);
+
 router.post(
   "/",
   EventController.validation.insert,
   handleValidatorErrors,
   EventController.create
+);
+
+router.get(
+  "/:eventId",
+  EventController.get
 );
 
 router.put(

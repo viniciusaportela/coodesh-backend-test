@@ -12,6 +12,11 @@ export default class LaunchModel {
     return result.rows[0];
   }
 
+  static async getMany() {
+    const result = await postgresClient.query('SELECT * FROM launches');
+    return result.rows;
+  }
+
   static async create(launch: ILaunch) {
     const result = await postgresClient.query(`
         INSERT INTO launches(

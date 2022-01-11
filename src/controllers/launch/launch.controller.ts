@@ -5,6 +5,25 @@ import { LaunchValidation } from "./launch.validation";
 export default class LaunchController {
   static validation = LaunchValidation;
 
+  static async get(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { launchId } = req.params;
+      const launch = await LaunchService.get(launchId);
+      res.json(launch);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  static async list(_req: Request, res: Response, next: NextFunction) {
+    try {
+      const launches = await LaunchService.list();
+      res.json(launches);
+    } catch (error) {
+      next(error);
+    }
+  }
+
   static async create(req: Request, res: Response, next: NextFunction) {
     try {
       const { id, provider } = req.body;
