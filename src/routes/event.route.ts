@@ -19,16 +19,24 @@ router.post(
 
 router.get(
   "/:eventId",
+  EventController.validation.paramVerification,
+  handleValidatorErrors,
   EventController.get
 );
 
 router.put(
   "/:eventId",
+  EventController.validation.paramVerification,
   EventController.validation.insert,
   handleValidatorErrors,
   EventController.update
 );
 
-router.delete("/:eventId", EventController.delete);
+router.delete(
+  "/:eventId",
+  EventController.validation.paramVerification,
+  handleValidatorErrors,
+  EventController.delete
+);
 
 export default router;

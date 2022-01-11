@@ -19,16 +19,24 @@ router.post(
 
 router.get(
   "/:launchId",
+  LaunchController.validation.paramVerification,
+  handleValidatorErrors,
   LaunchController.get
 );
 
 router.put(
   "/:launchId",
+  LaunchController.validation.paramVerification,
   LaunchController.validation.insert,
   handleValidatorErrors,
   LaunchController.update
 );
 
-router.delete("/:launchId", LaunchController.delete);
+router.delete(
+  "/:launchId",
+  LaunchController.validation.paramVerification,
+  handleValidatorErrors, 
+  LaunchController.delete
+);
 
 export default router;

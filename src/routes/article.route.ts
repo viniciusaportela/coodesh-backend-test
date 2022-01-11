@@ -7,7 +7,11 @@ const router = Router();
 
 router.get("/", ArticleController.list);
 
-router.get("/:articleId", ArticleController.get);
+router.get("/:articleId", 
+  ArticleController.validation.paramVerification,
+  handleValidatorErrors,
+  ArticleController.get
+);
 
 router.post(
   "/",
@@ -18,11 +22,16 @@ router.post(
 
 router.put(
   "/:articleId",
+  ArticleController.validation.paramVerification,
   ArticleController.validation.insert,
   handleValidatorErrors,
   ArticleController.update
 );
 
-router.delete("/:articleId", ArticleController.delete);
+router.delete("/:articleId", 
+  ArticleController.validation.paramVerification, 
+  handleValidatorErrors, 
+  ArticleController.delete
+);
 
 export default router;
