@@ -30,6 +30,26 @@ describe('Launches Suite Case', () => {
       expect(response.status).toBe(200);
       expect(response.body).toStrictEqual([launchMock]);
     });
+
+    it('should return a list of launches limited by 1 launch', async () => {
+      await LaunchModel.create(launchMock);
+      await LaunchModel.create({ ...launchMock, id: 'cabcd39f-2093-4b66-839a-192d81d761de' });
+
+      const response = await request(app).get('/launches').query({ limit: 1 });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual([launchMock]);
+    });
+
+    it('should return a list of launches limited by 1 launch and skip 1 launch', async () => {
+      await LaunchModel.create(launchMock);
+      await LaunchModel.create({ ...launchMock, id: 'cabcd39f-2093-4b66-839a-192d81d761de' });
+
+      const response = await request(app).get('/launches').query({ limit: 1, page: 2 });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual([{ ...launchMock, id: 'cabcd39f-2093-4b66-839a-192d81d761de' }]);
+    });
   })
 
   describe('POST /launches', () => {
@@ -45,7 +65,7 @@ describe('Launches Suite Case', () => {
   })
 
   describe('GET /launches/:launchId', () => {
-    it('should successfully return an event', async () => {
+    it('should successfully return an launch', async () => {
       await LaunchModel.create(launchMock);
 
       const response = await request(app).get(`/launches/${launchMock.id}`);

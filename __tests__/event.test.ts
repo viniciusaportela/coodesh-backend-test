@@ -30,6 +30,26 @@ describe('Events Suite Case', () => {
       expect(response.status).toBe(200);
       expect(response.body).toStrictEqual([eventMock]);
     });
+
+    it('should return a list of events limited by 1 event', async () => {
+      await EventModel.create(eventMock);
+      await EventModel.create({ ...eventMock, id: 3 });
+
+      const response = await request(app).get('/events').query({ limit: 1 });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual([eventMock]);
+    });
+
+    it('should return a list of events limited by 1 event and skip 1 event', async () => {
+      await EventModel.create(eventMock);
+      await EventModel.create({ ...eventMock, id: 3 });
+
+      const response = await request(app).get('/events').query({ limit: 1, page: 2 });
+
+      expect(response.status).toBe(200);
+      expect(response.body).toStrictEqual([{ ...eventMock, id: 3 }]);
+    });
   })
 
   describe('POST /events', () => {
