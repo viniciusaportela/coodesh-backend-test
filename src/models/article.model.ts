@@ -71,7 +71,6 @@ export default class ArticleModel {
   static async create(article: IInputArticle): Promise<IArticle> {
     const insertedResult = await postgresClient.query(`
         INSERT INTO articles(
-          id,
           featured,
           title,
           url,
@@ -79,10 +78,10 @@ export default class ArticleModel {
           news_site,
           summary,
           published_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+          ${article?.id ? ',id' : ''}
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7${article?.id ? ', $8' : ''})
         RETURNING ${this.querySelectAliases}
       `, [
-        article.id,
         article.featured,
         article.title,
         article.url,
@@ -90,8 +89,9 @@ export default class ArticleModel {
         article.newsSite,
         article.summary,
         article.publishedAt,
+        ...(article?.id ? [article.id]: [])
       ]);
-    
+
       return insertedResult.rows[0];
   }
 
