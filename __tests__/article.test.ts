@@ -121,7 +121,7 @@ describe('Articles Suite Case', () => {
 
   describe('PUT /articles/:articleId', () => {
     it("should return an error when the article doesn't exists", async () => {
-      const response = await request(app).get('/articles/1');
+      const response = await request(app).put('/articles/1').send(articleUpdatedInputMock);
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBe(ErrorCodes.NOT_FOUND);
@@ -141,7 +141,7 @@ describe('Articles Suite Case', () => {
 
   describe('DELETE /articles/:articleId', () => {
     it("should return an error when the article doesn't exists", async () => {
-      const response = await request(app).get('/articles/1');
+      const response = await request(app).delete('/articles/1');
 
       expect(response.status).toBe(404);
       expect(response.body.error).toBe(ErrorCodes.NOT_FOUND);
